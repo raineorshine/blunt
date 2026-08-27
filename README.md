@@ -49,8 +49,8 @@ Verbatim contents of `communication.md`, prepended to every session:
   not re-argue a correction while reporting it. It was agreed; just say what
   landed.
 * Omit anything with no consequence: "working tree clean", "JSON valid", "lint
-  passed", "no incidental changes". Verification is assumed. Report a check
-  only when it failed or changed what you did.
+  passed", "no incidental changes". Verification is assumed. Report a check only
+  when it failed or changed what you did.
 * Keep caveats and side observations to one line each.
 ```
 <!-- communication:end -->
