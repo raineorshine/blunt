@@ -14,7 +14,14 @@ grep -qF -- "$END" "$README" || { echo "build.sh: end marker missing from $READM
 
 tmp=$(mktemp)
 awk -v b="$BEGIN" -v e="$END" -v src="$SRC" '
-  $0 == b { print; while ((getline line < src) > 0) print line; close(src); skip=1; next }
+  $0 == b {
+    print
+    print "```markdown"
+    while ((getline line < src) > 0) print line
+    close(src)
+    print "```"
+    skip=1; next
+  }
   $0 == e { skip=0 }
   !skip { print }
 ' "$README" > "$tmp"
