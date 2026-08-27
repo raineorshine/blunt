@@ -1,0 +1,9 @@
+{
+  "name": "blunt",
+  "description": "Injects blunt, outcome-first communication guidelines at session start.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Raine Revere",
+    "email": "raine.revere@pm.me"
+  }
+}

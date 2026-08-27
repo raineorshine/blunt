@@ -1,0 +1,15 @@
+{
+  "name": "blunt",
+  "description": "Plugins for blunt, low-noise agent behavior.",
+  "owner": {
+    "name": "Raine Revere",
+    "email": "raine.revere@pm.me"
+  },
+  "plugins": [
+    {
+      "name": "blunt",
+      "description": "Injects blunt, outcome-first communication guidelines at session start.",
+      "source": "./plugins/blunt"
+    }
+  ]
+}
