@@ -20,8 +20,9 @@ claude plugin install blunt@blunt
 Installs at user scope (`~/.claude/settings.json`), so it applies to both the
 terminal and the desktop app. Start a new session to pick it up.
 
-In an interactive session, `/plugin marketplace add raineorshine/blunt` and
-`/plugin install blunt@blunt` do the same thing.
+In an interactive terminal session, `/plugin marketplace add raineorshine/blunt`
+and `/plugin install blunt@blunt` do the same thing. The desktop app has no
+`/plugin` command — install from a terminal as above.
 
 For a one-off session, skipping install:
 
