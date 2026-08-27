@@ -12,15 +12,27 @@ context resets).
 
 ## Install
 
-```
-/plugin marketplace add raineorshine/blunt
-/plugin install blunt@blunt
+```sh
+claude plugin marketplace add raineorshine/blunt
+claude plugin install blunt@blunt
 ```
 
-Or for a one-off session:
+Installs at user scope (`~/.claude/settings.json`), so it applies to both the
+terminal and the desktop app. Start a new session to pick it up.
 
-```
+In an interactive session, `/plugin marketplace add raineorshine/blunt` and
+`/plugin install blunt@blunt` do the same thing.
+
+For a one-off session, skipping install:
+
+```sh
 claude --plugin-dir path/to/blunt/plugins/blunt
+```
+
+Uninstall:
+
+```sh
+claude plugin uninstall blunt@blunt
 ```
 
 ## Injected context
