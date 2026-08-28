@@ -50,9 +50,11 @@ single update upgrades all of them — there is nothing to do per project.
 Restart open sessions to apply: the `SessionStart` hook has already fired in
 running sessions, so they keep the old guidelines until restarted.
 
-Installs track the git commit, so no version bump is required — but bumping
-`plugins/blunt/.claude-plugin/plugin.json` keeps `claude plugin list` honest
-about what's deployed.
+Updates are gated on the version in
+[`plugins/blunt/.claude-plugin/plugin.json`](plugins/blunt/.claude-plugin/plugin.json):
+without a bump, `claude plugin update` reports "already at the latest version"
+even when `main` has new commits. Bump the version in any change that should
+ship.
 
 ## Injected context
 
