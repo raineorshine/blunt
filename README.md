@@ -36,6 +36,24 @@ Uninstall:
 claude plugin uninstall blunt@blunt
 ```
 
+## Upgrade
+
+After pushing changes to `main`:
+
+```sh
+claude plugin update blunt
+```
+
+The marketplace pulls from GitHub, so unpushed local edits are invisible to it.
+The plugin is installed once at user scope and shared by every project, so a
+single update upgrades all of them — there is nothing to do per project.
+Restart open sessions to apply: the `SessionStart` hook has already fired in
+running sessions, so they keep the old guidelines until restarted.
+
+Installs track the git commit, so no version bump is required — but bumping
+`plugins/blunt/.claude-plugin/plugin.json` keeps `claude plugin list` honest
+about what's deployed.
+
 ## Injected context
 
 This is it. Injected into every session:
