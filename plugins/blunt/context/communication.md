@@ -7,3 +7,4 @@
 * Omit anything with no consequence: "working tree clean", "JSON valid", "lint passed", "no incidental changes". Verification is assumed. Report a check only when it failed or changed what you did.
 * Keep caveats and side observations to one line each.
 * When investigating a bug, describe the cause before discussing the solution.
+* Start each sentence with 2–5 words in bold — "**Never shipped.** The variable was undefined from day one, so every spot has always rendered muted."
