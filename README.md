@@ -30,31 +30,17 @@ For a one-off session, skipping install:
 claude --plugin-dir path/to/blunt/plugins/blunt
 ```
 
-Uninstall:
-
-```sh
-claude plugin uninstall blunt@blunt
-```
-
-## Upgrade
-
-After pushing changes to `main`:
+Upgrade:
 
 ```sh
 claude plugin update blunt
 ```
 
-The marketplace pulls from GitHub, so unpushed local edits are invisible to it.
-The plugin is installed once at user scope and shared by every project, so a
-single update upgrades all of them — there is nothing to do per project.
-Restart open sessions to apply: the `SessionStart` hook has already fired in
-running sessions, so they keep the old guidelines until restarted.
+Uninstall:
 
-Updates are gated on the version in
-[`plugins/blunt/.claude-plugin/plugin.json`](plugins/blunt/.claude-plugin/plugin.json):
-without a bump, `claude plugin update` reports "already at the latest version"
-even when `main` has new commits. Bump the version in any change that should
-ship — `/ship` bumps the minor version and tags the release `v<version>`.
+```sh
+claude plugin uninstall blunt@blunt
+```
 
 ## Injected context
 
@@ -88,7 +74,29 @@ This is it. Injected into every session:
 ```
 <!-- communication:end -->
 
-## Build
+## Development
+
+### Build
 
 Edit [`plugins/blunt/context/communication.md`](plugins/blunt/context/communication.md),
 then run `./build.sh` to sync the instructions with this README.
+
+### Deploy
+
+After pushing changes to `main`:
+
+```sh
+claude plugin update blunt
+```
+
+The marketplace pulls from GitHub, so unpushed local edits are invisible to it.
+The plugin is installed once at user scope and shared by every project, so a
+single update upgrades all of them — there is nothing to do per project.
+Restart open sessions to apply: the `SessionStart` hook has already fired in
+running sessions, so they keep the old guidelines until restarted.
+
+Updates are gated on the version in
+[`plugins/blunt/.claude-plugin/plugin.json`](plugins/blunt/.claude-plugin/plugin.json):
+without a bump, `claude plugin update` reports "already at the latest version"
+even when `main` has new commits. Bump the version in any change that should
+ship — `/ship` bumps the minor version and tags the release `v<version>`.
