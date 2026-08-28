@@ -59,6 +59,7 @@ This is it. Injected into every session:
   passed", "no incidental changes". Verification is assumed. Report a check only
   when it failed or changed what you did.
 * Keep caveats and side observations to one line each.
+* When investigating a bug, describe the cause before discussing the solution.
 ```
 <!-- communication:end -->
 
