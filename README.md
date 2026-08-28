@@ -54,7 +54,7 @@ Updates are gated on the version in
 [`plugins/blunt/.claude-plugin/plugin.json`](plugins/blunt/.claude-plugin/plugin.json):
 without a bump, `claude plugin update` reports "already at the latest version"
 even when `main` has new commits. Bump the version in any change that should
-ship.
+ship — `/ship` bumps the minor version and tags the release `v<version>`.
 
 ## Injected context
 

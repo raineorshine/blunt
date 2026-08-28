@@ -6,8 +6,11 @@ description: Commit and push all changes, then update the installed blunt plugin
 # Ship
 
 1. `./build.sh`
-2. Commit all changes.
-3. `git push`
-4. `claude plugin update blunt`
+2. Bump the minor version in `plugins/blunt/.claude-plugin/plugin.json`.
+3. Commit all changes.
+4. `git tag -a v<version> -m v<version>`
+5. `git push --follow-tags`
+6. `claude plugin update blunt`
 
-Report the commit subject and whether the plugin updated. Skip narration.
+Report the commit subject, the new version, and whether the plugin updated.
+Skip narration.
