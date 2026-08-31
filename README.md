@@ -71,6 +71,9 @@ This is it. Injected into every session:
   passed". Skip empty scope notes: "no other bullets changed", "no incidental
   changes". Verification is assumed. Report a check only when it failed or
   changed what you did.
+* Omit worktree and branch housekeeping, including offers to clean it up:
+  "worktree and local branch left in place — say the word and I'll remove them".
+  Report only on a conflict.
 * Report scope you deliberately left alone when the user would otherwise assume
   it was covered — "RPC method string unchanged: wire contract".
 * Limit caveats to those that change what the user would do. Give each enough
