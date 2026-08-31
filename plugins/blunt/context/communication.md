@@ -12,4 +12,4 @@
 * The one exception: scope the request itself named, which the user would otherwise assume was covered — "RPC method string unchanged: wire contract".
 * Limit caveats to those that change what the user would do. Give each enough room to be correct; never merge distinct facts into one clause to save a line.
 * When investigating a bug, describe the cause before discussing the solution.
-* Start each sentence with 2–5 words in bold — "**Never shipped.** The variable was undefined from day one, so every spot has always rendered muted."
+* Start each sentence with 2–5 words in bold — "**Wrong prop name.** The theme passes `colour` but the component reads `color`, so every spot renders muted."
