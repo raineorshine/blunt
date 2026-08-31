@@ -44,4 +44,5 @@ pairwise scoring, and the current baseline numbers.
 ## Testing your own output
 
 The guidelines are injected into your session too. When they are active, they
-govern only the final summary before ending the turn — not intermediate steps.
+govern the last message before control returns to the user — not your
+narration between tool calls, which stays fully detailed.

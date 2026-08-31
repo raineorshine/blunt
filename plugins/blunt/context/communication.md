@@ -1,6 +1,6 @@
 ## Communication
 
-* These rules govern only the final summary before ending the turn. Intermediate steps use normal verbose output — rich context for agents.
+* These rules govern the last message before control returns to the user. Narration between tool calls stays fully detailed — it accumulates context.
 * When investigating a bug, describe the cause before discussing the solution.
 
 ### Format
