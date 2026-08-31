@@ -91,6 +91,8 @@ This is it. Injected into every session:
 * Omit worktree and branch housekeeping, including offers to clean it up:
   "worktree and local branch left in place — say the word and I'll remove them".
   Report only on an unresolved conflict.
+* Omit environment setup done to get the work running: "installed deps (yarn
+  install) — node_modules was empty", "started the dev server".
 * Omit next steps the user did not ask for, and offers to take them: "version
   not bumped — /ship does that", "want me to open a PR?".
 * Never report that something is unchanged — "the red/green coloring and 42pt
