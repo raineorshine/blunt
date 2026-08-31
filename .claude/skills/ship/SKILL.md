@@ -11,6 +11,7 @@ description: Commit and push all changes, then update the installed blunt plugin
 4. `git tag -a v<version> -m v<version>`
 5. `git push --follow-tags`
 6. `claude plugin update blunt`
+7. Print `🚀 Shipped`
 
 Report the commit subject, the new version, and whether the plugin updated.
 Skip narration.
