@@ -1,7 +1,7 @@
 {
   "name": "blunt",
   "description": "Injects blunt, outcome-first communication guidelines at session start.",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "license": "MIT",
   "author": {
     "name": "Raine Revere",
