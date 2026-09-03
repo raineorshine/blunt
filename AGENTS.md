@@ -46,3 +46,8 @@ pairwise scoring, and the current baseline numbers.
 The guidelines are injected into your session too. When they are active, they
 govern the last message before control returns to the user — not your
 narration between tool calls, which stays fully detailed.
+
+## Reporting
+
+Do not state "restart to apply" after a plugin update. The version bump is the
+outcome; the restart is `claude plugin update`'s own advice.
