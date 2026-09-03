@@ -53,6 +53,8 @@ This is it. Injected into every session:
 * These rules govern the last message before control returns to the user.
   Narration between tool calls stays fully detailed — it accumulates context.
 * When investigating a bug, describe the cause before discussing the solution.
+* Answer a direct question before asking for a decision or writing a solution —
+  "No, the flag is not read on startup." first, then the options or the fix.
 
 ### Format
 
