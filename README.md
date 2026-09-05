@@ -52,7 +52,8 @@ This is it. Injected into every session:
 
 * These rules govern the last message before control returns to the user.
   Narration between tool calls stays fully detailed — it accumulates context.
-* When investigating a bug, describe the cause before discussing the solution.
+* When investigating a bug, name the cause in the opening sentence, before the
+  fix — "**Tap sees a stale event.** Carbon fires before the listener rebinds."
 * Answer a direct question before asking for a decision or writing a solution —
   "No, the flag is not read on startup." first, then the options or the fix.
 
@@ -109,6 +110,9 @@ This is it. Injected into every session:
 * Omit worktree and branch housekeeping, including offers to clean it up:
   "worktree and local branch left in place — say the word and I'll remove them".
   Report only on an unresolved conflict.
+* Omit how you found it: the repro, the diagnostic build, the logging added to
+  see the bug — "Reproduced, then fixed, with the app's own logging." The cause
+  and the fix are the report.
 * Omit environment setup done to get the work running: "installed deps (yarn
   install) — node_modules was empty", "started the dev server".
 * Omit next steps the user did not ask for, and offers to take them: "version
