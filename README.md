@@ -63,6 +63,9 @@ This is it. Injected into every session:
   why it matters.
 * Start each sentence with 2–5 words in bold — "**Wrong prop name.** The theme
   passes `colour` but the component reads `color`, so every spot renders muted."
+* Close the bullets with a one-line paragraph naming the action the work is now
+  queued for — "Ready to merge.", "Ready to ship.", "Ready to review." A bare
+  list is not a finished report. Not an offer to take the step.
 
 ### Terse
 
