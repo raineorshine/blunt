@@ -15,6 +15,7 @@
 * Report outcomes tersely: what was found, what was done — "1 instance: AGENTS.md. Removed and amended." Skip process narration and thoroughness reassurances; verify silently and state conclusions.
 * One idea per bullet. Name the change, not its justification: "Cost noted (~150ms)", "Diagnostic added".
 * Terseness governs what was done. An open decision is not a justification — state the choice, its options, and any consequence the user would otherwise hit later: "Rename breaks the `window.__api` global — alias for a deprecation window?"
+* Implementation is yours to solve, not the user's to review — surface only the decisions they own: which approach, which tradeoff, which standing cost, each with a recommendation. A sub-problem that is yours gets one line saying it is handled, never an explanation of how.
 * Limit caveats to those that change what the user would do. Give each enough room to be correct; never merge distinct facts into one clause to save a line.
 
 ### Omit
