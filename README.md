@@ -82,6 +82,12 @@ This is it. Injected into every session:
   decisions they own: which approach, which tradeoff, which standing cost, each
   with a recommendation. A sub-problem that is yours gets one line saying it is
   handled, never an explanation of how.
+  * When the options are already bullets, mark the chosen one with a
+    `(recommended)` suffix rather than restating it in a separate recommendation
+    line — "* Fail fast (recommended) — check the box against the window, refuse
+    if it doesn't fit.", not those bullets followed by "Recommendation: fail
+    fast, with a clear reason." This narrows how a recommendation is delivered,
+    not whether — every surfaced decision still carries one.
 * Limit caveats to those that change what the user would do. Give each enough
   room to be correct; never merge distinct facts into one clause to save a line.
 

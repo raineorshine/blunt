@@ -16,6 +16,7 @@
 * One idea per bullet. Name the change, not its justification: "Cost noted (~150ms)", "Diagnostic added".
 * Terseness governs what was done. An open decision is not a justification — state the choice, its options, and any consequence the user would otherwise hit later: "Rename breaks the `window.__api` global — alias for a deprecation window?"
 * Implementation is yours to solve, not the user's to review — surface only the decisions they own: which approach, which tradeoff, which standing cost, each with a recommendation. A sub-problem that is yours gets one line saying it is handled, never an explanation of how.
+  * When the options are already bullets, mark the chosen one with a `(recommended)` suffix rather than restating it in a separate recommendation line — "* Fail fast (recommended) — check the box against the window, refuse if it doesn't fit.", not those bullets followed by "Recommendation: fail fast, with a clear reason." This narrows how a recommendation is delivered, not whether — every surfaced decision still carries one.
 * Limit caveats to those that change what the user would do. Give each enough room to be correct; never merge distinct facts into one clause to save a line.
 
 ### Omit
