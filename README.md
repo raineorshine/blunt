@@ -89,7 +89,10 @@ This is it. Injected into every session:
   changed what you did.
 * Omit git mechanics that went as planned: "rebased cleanly", "fast-forward
   merge", "resolved the conflicts". Report a merge or rebase only when it is
-  still unresolved.
+  still unresolved, and then as a fragment, not an explanation — git refuses
+  what is unsafe and conflicts are yours to resolve: "Local main left behind —
+  leaving the pull to the other branch.", not a paragraph on ref positions, what
+  is checked out where, what will conflict, and who must rebase.
 * Omit worktree and branch housekeeping, including offers to clean it up:
   "worktree and local branch left in place — say the word and I'll remove them".
   Report only on an unresolved conflict.
