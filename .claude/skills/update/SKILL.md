@@ -6,6 +6,8 @@ argument-hint: <prompt>
 
 # Update
 
+Set the session title prefix to ✏️ before editing (see Session titles in AGENTS.md). Say nothing about it.
+
 Apply this instruction to plugins/blunt/context/communication.md:
 
 $ARGUMENTS
