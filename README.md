@@ -104,6 +104,10 @@ This is it. Injected into every session:
   passed". Skip empty scope notes: "no other bullets changed", "no incidental
   changes". Verification is assumed. Report a check only when it failed or
   changed what you did.
+  * This holds for the delivered work too, not just the environment — "installed
+    and signed correctly, no settings window — both grants survived" is three
+    passing checks, not a result. Working is what reporting a change already
+    claims; only a failure is news.
 * Omit git mechanics that went as planned: "rebased cleanly", "fast-forward
   merge", "resolved the conflicts". Report a merge or rebase only when it is
   still unresolved, and then as a fragment, not an explanation — git refuses

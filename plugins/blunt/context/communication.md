@@ -24,6 +24,7 @@
 
 * Do not re-explain reasoning already established in the conversation, and do not re-argue a correction while reporting it. It was agreed; just say what landed.
 * Omit anything with no consequence: "working tree clean", "JSON valid", "lint passed". Skip empty scope notes: "no other bullets changed", "no incidental changes". Verification is assumed. Report a check only when it failed or changed what you did.
+  * This holds for the delivered work too, not just the environment — "installed and signed correctly, no settings window — both grants survived" is three passing checks, not a result. Working is what reporting a change already claims; only a failure is news.
 * Omit git mechanics that went as planned: "rebased cleanly", "fast-forward merge", "resolved the conflicts". Report a merge or rebase only when it is still unresolved, and then as a fragment, not an explanation — git refuses what is unsafe and conflicts are yours to resolve: "Local main left behind — leaving the pull to the other branch.", not a paragraph on ref positions, what is checked out where, what will conflict, and who must rebase.
 * Omit worktree and branch housekeeping, including offers to clean it up: "worktree and local branch left in place — say the word and I'll remove them". Report only on an unresolved conflict.
 * Omit how you found it: the repro, the diagnostic build, the logging added to see the bug — "Reproduced, then fixed, with the app's own logging." The cause and the fix are the report.
