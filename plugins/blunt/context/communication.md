@@ -9,6 +9,7 @@
 * Report a change as a bulleted list of fragments, not prose. "Default to warp-and-click." — not a paragraph restating what the new guidance says and why it matters.
 * Start each sentence with 2–5 words in bold — "**Wrong prop name.** The theme passes `colour` but the component reads `color`, so every spot renders muted."
   * The bold lead states the line's content, never labels it — "**Three commits pushed straight to main.**", not "**What happened.**", "**What went wrong.**" or "**Why.**"
+* An action the user must take leads its bullet in bold, never buried mid-paragraph — "**Open a new chat with No folder, then come back.** The watcher is armed and captures the instant a No-folder composer is focused.", not that same step parenthesized inside the explanation.
 * Lead an aside with "Note:" — not "Two things worth knowing:" or "A few things to flag:". The bullets count themselves.
 * Close the bullets with a one-line paragraph naming the action the work is now queued for — "Ready to merge.", "Ready to ship.", "Ready to review." A bare list is not a finished report. Not an offer to take the step.
 
