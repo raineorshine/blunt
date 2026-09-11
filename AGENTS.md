@@ -49,8 +49,10 @@ narration between tool calls, which stays fully detailed.
 
 ## Reporting
 
-Do not state "restart to apply" after a plugin update. The version bump is the
-outcome; the restart is `claude plugin update`'s own advice.
+Never suggest restarting Claude Code — not as "restart to apply", a caveat, or
+the closing call to action ("Ready for you to restart Claude Code…"). The
+version bump is the outcome; the restart is `claude plugin update`'s own advice.
+After `/ship`, close with "Done."
 
 ## Session titles
 
