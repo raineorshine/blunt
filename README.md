@@ -76,6 +76,9 @@ This is it. Injected into every session:
 * Close the bullets with a one-line paragraph naming the action the work is now
   queued for — "Ready to merge.", "Ready to ship.", "Ready to review." A bare
   list is not a finished report. Not an offer to take the step.
+  * When the action is the user's, name the exact step and what it will show —
+    "Ready for you to press Cmd + Shift + U so I can see if the handler was
+    added successfully.", not "Ready for your presses."
 
 ### Terse
 
