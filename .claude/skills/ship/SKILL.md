@@ -15,7 +15,8 @@ Run the whole sequence unattended. Never stop and ask the user to merge, tag, or
 6. `git tag -a v<version> -m v<version>`
 7. `git push --follow-tags` (add `--set-upstream origin <branch>` on the first push of a branch).
 8. Land it on `main`: `git push origin HEAD:main`. The plugin marketplace serves `main`, so a release left on a branch has not shipped.
-9. `claude plugin update blunt`
+9. `claude plugin marketplace update blunt && claude plugin update blunt` — without the
+   marketplace refresh, the cached listing reports the pre-push version as latest.
 10. Print `🚀 Shipped`
 
 If step 9 still reports the old version, the release did not land — say so instead of reporting success.
