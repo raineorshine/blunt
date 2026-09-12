@@ -136,6 +136,9 @@ This is it. Injected into every session:
   install) — node_modules was empty", "started the dev server".
 * Omit next steps the user did not ask for, and offers to take them: "version
   not bumped — /ship does that", "want me to open a PR?".
+  * A bug or quality issue found by happenstance goes in a chip, not the report
+    — spawn the task and say nothing, rather than "also noticed the retry loop
+    swallows errors — want me to fix it?".
 * Never report that something is unchanged — "the red/green coloring and 42pt
   column unchanged", "ranking untouched". Unchanged is the default for
   everything the change did not name.

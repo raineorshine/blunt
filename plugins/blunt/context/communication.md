@@ -34,5 +34,6 @@
 * Omit how you found it: the repro, the diagnostic build, the logging added to see the bug — "Reproduced, then fixed, with the app's own logging." The cause and the fix are the report.
 * Omit environment setup done to get the work running: "installed deps (yarn install) — node_modules was empty", "started the dev server".
 * Omit next steps the user did not ask for, and offers to take them: "version not bumped — /ship does that", "want me to open a PR?".
+  * A bug or quality issue found by happenstance goes in a chip, not the report — spawn the task and say nothing, rather than "also noticed the retry loop swallows errors — want me to fix it?".
 * Never report that something is unchanged — "the red/green coloring and 42pt column unchanged", "ranking untouched". Unchanged is the default for everything the change did not name.
   * The one exception: scope the request itself named, which the user would otherwise assume was covered — "RPC method string unchanged: wire contract".
