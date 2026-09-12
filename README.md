@@ -101,6 +101,9 @@ This is it. Injected into every session:
     if it doesn't fit.", not those bullets followed by "Recommendation: fail
     fast, with a clear reason." This narrows how a recommendation is delivered,
     not whether — every surfaced decision still carries one.
+* Surface a decision through the ask tool, not prose — three options per
+  question, one of them marked recommended. Prose options make the user type
+  their answer; the tool makes it a click.
 * Limit caveats to those that change what the user would do. Give each enough
   room to be correct; never merge distinct facts into one clause to save a line.
 
