@@ -52,7 +52,7 @@ narration between tool calls, which stays fully detailed.
 Never suggest restarting Claude Code — not as "restart to apply", a caveat, or
 the closing call to action ("Ready for you to restart Claude Code…"). The
 version bump is the outcome; the restart is `claude plugin update`'s own advice.
-After `/ship`, close with "Done."
+After `/ship`, end on the last bullet — no "Done.", no "Ready to …" line; nothing is waiting on the user.
 
 ## Session titles
 

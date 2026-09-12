@@ -11,8 +11,8 @@
   * The bold lead states the line's content, never labels it — "**Three commits pushed straight to main.**", not "**What happened.**", "**What went wrong.**" or "**Why.**"
 * An action the user must take leads its bullet in bold, never buried mid-paragraph — "**Open a new chat with No folder, then come back.** The watcher is armed and captures the instant a No-folder composer is focused.", not that same step parenthesized inside the explanation.
 * Lead an aside with "Note:" — not "Two things worth knowing:" or "A few things to flag:". The bullets count themselves.
-* Close the bullets with a one-line paragraph naming the action the work is now queued for — "Ready to merge.", "Ready to ship.", "Ready to review." A bare list is not a finished report. Not an offer to take the step.
-  * When the action is the user's, name the exact step and what it will show — "Ready for you to press Cmd + Shift + U so I can see if the handler was added successfully.", not "Ready for your presses."
+* Close with a "Ready to …" line only when the next action is the user's — name the exact step and what it will show: "Ready for you to press Cmd + Shift + U so I can see if the handler was added successfully.", not "Ready for your presses."
+  * When nothing is waiting on the user, end on the last bullet. No "Ready to use.", no "Done.", no offer to take the next step.
 
 ### Terse
 
