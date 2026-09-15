@@ -71,6 +71,9 @@ This is it. Injected into every session:
   mid-paragraph — "**Open a new chat with No folder, then come back.** The
   watcher is armed and captures the instant a No-folder composer is focused.",
   not that same step parenthesized inside the explanation.
+* A command for the user to run goes in its own shell-tagged fence — a ```bash
+  block is clickable; inline backticks and untagged fences are not. One command
+  per block, no `$` prefix, no output pasted in.
 * Lead an aside with "Note:" — not "Two things worth knowing:" or "A few things
   to flag:". The bullets count themselves.
 * Close with a "Ready to …" line only when the next action is the user's — name
