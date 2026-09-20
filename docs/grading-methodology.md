@@ -13,9 +13,19 @@ sessions with and without it and read what actually came out.
 
 The plugin injects via a `SessionStart` hook, and `--plugin-dir` loads a plugin
 for one session only. That gives an exact A/B — same binary, same model, same
-fixtures, same working directory, one flag apart:
+fixtures, same working directory, one flag apart.
+
+Run both arms against a scratch config dir with no plugins enabled. A globally
+installed `blunt` injects into *every* session the harness spawns, control
+included — plugin `SessionStart` hooks fire in headless `-p` mode exactly as
+they do interactively. `CLAUDE_CONFIG_DIR` isolates the run without mutating
+the settings your other sessions read:
 
 ```sh
+export CLAUDE_CONFIG_DIR=/tmp/blunt-ab
+mkdir -p "$CLAUDE_CONFIG_DIR"
+echo '{"enabledPlugins":{}}' > "$CLAUDE_CONFIG_DIR/settings.json"
+
 # control
 claude -p --model opus --output-format json "$TASK"
 
@@ -23,17 +33,20 @@ claude -p --model opus --output-format json "$TASK"
 claude -p --model opus --output-format json --plugin-dir path/to/plugins/blunt "$TASK"
 ```
 
-Disable the plugin globally first (`enabledPlugins: {}` in
-`~/.claude/settings.json`), or the control arm is contaminated.
+Editing `enabledPlugins` in `~/.claude/settings.json` works too, but leaves
+global state you have to remember to put back.
 
-**Always run the manipulation check** before trusting a run:
+**Always run the manipulation check** before trusting a run. Ask what a hook
+added, not whether style guidance is present: asked the latter, a control with
+the guidelines demonstrably in context still answers `NONE`, so the check
+clears a contaminated run.
 
 ```sh
-claude -p 'Was any text about communication style added to your context at
-session start? Quote it verbatim, or reply exactly: NONE'
+claude -p 'List every distinct block of text that was added to your context at
+session start by a hook. Just name them, one per line. If none, reply NONE'
 ```
 
-Control must answer `NONE`; treatment must quote the file back.
+Control must answer `NONE`; treatment must name the communication guidelines.
 
 ## Design
 

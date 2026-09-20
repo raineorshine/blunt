@@ -34,12 +34,14 @@ than following them literally — several bullets in this file are routinely
 disobeyed, and at least one was only safe *because* it was disobeyed.
 
 Run a real A/B instead: `--plugin-dir` loads the plugin for a single session, so
-a control and treatment run differ by exactly one flag. Fabricate the inputs;
-never fabricate the outputs.
+a control and treatment run differ by exactly one flag — but only from a config
+dir with no plugins enabled, or a globally installed `blunt` injects into the
+control too. Fabricate the inputs; never fabricate the outputs.
 
 See [`docs/grading-methodology.md`](docs/grading-methodology.md) for the harness,
-the manipulation check, blind grading, the length confound that invalidates naive
-pairwise scoring, and the current baseline numbers.
+the manipulation check (which returns a false `NONE` if you ask it the wrong
+way), blind grading, the length confound that invalidates naive pairwise
+scoring, and the current baseline numbers.
 
 ## Testing your own output
 
