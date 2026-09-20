@@ -1,6 +1,10 @@
 # Tags v<version> when a version bump lands on main. Cloud sessions cannot push
 # tags — the agent proxy scopes their git credential to the session's own branch
 # and refuses refs/tags/* — so the tag is created here instead of by ./ship.
+#
+# Requires Settings > Actions > General > Workflow permissions set to "Read and
+# write permissions". That setting caps what the permissions block below can be
+# granted; if it is on the read-only default, the tag push fails with a 403.
 name: Tag release
 
 on:
