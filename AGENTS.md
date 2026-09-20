@@ -12,7 +12,6 @@ one file of injected guidelines; everything else is packaging.
 | `plugins/blunt/.claude-plugin/plugin.json` | version; gates `claude plugin update` |
 | `build.sh` | syncs `communication.md` into the README |
 | `.github/workflows/tag-release.yml` | tags `v<version>` when a bump lands on `main` |
-| `docs/grading-methodology.md` | how to evaluate a change to the guidelines |
 
 ## Editing the guidelines
 
@@ -38,15 +37,10 @@ blend injected style rules with harness guidance and their own priors rather
 than following them literally — several bullets in this file are routinely
 disobeyed, and at least one was only safe *because* it was disobeyed.
 
-Run a real A/B instead: `--plugin-dir` loads the plugin for a single session, so
-a control and treatment run differ by exactly one flag — but only from a config
-dir with no plugins enabled, or a globally installed `blunt` injects into the
-control too. Fabricate the inputs; never fabricate the outputs.
-
-See [`docs/grading-methodology.md`](docs/grading-methodology.md) for the harness,
-the manipulation check (which returns a false `NONE` if you ask it the wrong
-way), blind grading, the length confound that invalidates naive pairwise
-scoring, and the current baseline numbers.
+Try it instead: `--plugin-dir plugins/blunt` loads the plugin for one session,
+so a run with the flag and a run without differ by exactly that. Give both the
+same real task in a real repo and read what came out. Fabricate the inputs;
+never fabricate the outputs.
 
 ## Testing your own output
 
@@ -70,12 +64,11 @@ what the app cannot know: where the work stands.
 
 | Prefix | Means |
 |---|---|
-| ✏️ | drafting a guideline change — edited, not yet graded |
-| 🧪 | A/B run done and the change beat its control — shippable without re-running |
+| ✏️ | drafting a guideline change — edited, not yet tried |
 | 🚀 | shipping to `main`, or shipped |
-| 🚙 | parked: the work is sound and waiting on the user (a decision, a grading batch) |
-| 🪦 | dead end — the change did not beat its control; kept for the finding, not to resume |
-| 📚 | extracting learnings into AGENTS.md or `docs/`, or done extracting them |
+| 🚙 | parked: the work is sound and waiting on the user (a decision, a review) |
+| 🪦 | dead end — the change did not work out; kept for the finding, not to resume |
+| 📚 | extracting learnings into AGENTS.md, or done extracting them |
 
 **Never mention a prefix in the response** — not what it was set to, not that it was already right,
 not that it was left alone. It is sidebar state; say nothing about it unless asked.
@@ -83,13 +76,12 @@ not that it was left alone. It is sidebar state; say nothing about it unless ask
 These are **stages, not flags**: exactly one prefix at a time, and setting a new one replaces
 whatever was there. Set a prefix **optimistically** — when the stage *starts*, not when it succeeds —
 and correct it if the stage falls over. A title that only becomes true at the end is blank for the
-whole stretch the sidebar is there to describe. Only one reads cleanly at sidebar width, and 🚀 after
-🧪 is noise — the later stage implies the earlier.
+whole stretch the sidebar is there to describe. Only one reads cleanly at sidebar width, and a later
+stage implies the earlier one.
 
-The lifecycle ✏️ → 🧪 → 🚀 is set by skills where one owns the stage (`update` sets ✏️ before it
-edits; `ship` sets 🚀 before it builds and puts it back if the push fails), so it stays true on its
-own. 🧪 is set by hand, and only after a real A/B — never off reasoning about what a bullet would
-cause. 📚 is set by hand the moment the `learn` skill is invoked — before reading anything or making
-any edit. The rest are set by hand when they apply, and nothing reconciles a title against reality —
+The lifecycle ✏️ → 🚀 is set by skills where one owns the stage (`update` sets ✏️ before it edits;
+`ship` sets 🚀 before it builds and puts it back if the push fails), so it stays true on its own.
+📚 is set by hand the moment the `learn` skill is invoked — before reading anything or making any
+edit. The rest are set by hand when they apply, and nothing reconciles a title against reality —
 an abandoned session keeps whatever prefix it had. 🚙 in particular is worth setting before handing
-back a grading batch: the idle dot cannot tell "waiting on you" from "given up on".
+work back: the idle dot cannot tell "waiting on you" from "given up on".
