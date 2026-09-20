@@ -67,6 +67,7 @@ what the app cannot know: where the work stands.
 | ✏️ | drafting a guideline change — edited, not yet tried |
 | 🚀 | shipping to `main`, or shipped |
 | 🚙 | parked: the work is sound and waiting on the user (a decision, a review) |
+| ⏲️ | waiting on a task scheduled for later — nothing to do until it fires |
 | 🪦 | dead end — the change did not work out; kept for the finding, not to resume |
 | 📚 | extracting learnings into AGENTS.md, or done extracting them |
 
@@ -84,4 +85,6 @@ The lifecycle ✏️ → 🚀 is set by skills where one owns the stage (`update
 📚 is set by hand the moment the `learn` skill is invoked — before reading anything or making any
 edit. The rest are set by hand when they apply, and nothing reconciles a title against reality —
 an abandoned session keeps whatever prefix it had. 🚙 in particular is worth setting before handing
-work back: the idle dot cannot tell "waiting on you" from "given up on".
+work back: the idle dot cannot tell "waiting on you" from "given up on". ⏲️ is the clock's
+version of it: a task scheduled for later with nothing to do until it fires. 🚙 takes precedence
+where the same response also needs the user — a person can act and the clock cannot.
