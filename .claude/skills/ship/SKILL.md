@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Commit and push all changes, then update the installed blunt plugin. Use when the user says "ship" or invokes /ship.
+description: Commit and push all changes, update the installed blunt plugin, then extract the session's learnings. Use when the user says "ship" or invokes /ship.
 ---
 
 # Ship
@@ -24,7 +24,12 @@ Run the whole sequence unattended. Never stop and ask the user to merge, tag, or
    minute while Actions runs.
 9. `claude plugin marketplace update blunt && claude plugin update blunt` — without the
    marketplace refresh, the cached listing reports the pre-push version as latest.
-10. Print `🚀 Shipped`
+10. Invoke the `learn` skill. A shipped release is the moment its lessons are worth
+    writing down, and it needs no ask — it is the last stage of shipping. Skip it only
+    when `learn` is what invoked this ship (its own procedure ends in one), or the two
+    would call each other forever. `learn` puts `📚 ` on the title; put `🚀 ` back when
+    it finishes. If it finds nothing worth recording, say so in one line.
+11. Print `🚀 Shipped`
 
 If step 9 still reports the old version, the release did not land — say so instead of reporting success.
 If step 8 finds no tag, say which version is untagged; do not report a clean ship.
