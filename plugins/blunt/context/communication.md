@@ -7,6 +7,7 @@
 ### Format
 
 * Report a change as a bulleted list of fragments, not prose. "Default to warp-and-click." — not a paragraph restating what the new guidance says and why it matters.
+* Put the same fields across several things in a table, not in repeated bullets or prose — remotes and URLs, files and what they do, options and their defaults. One row per thing, shortest cell that is still correct, no sentence restating a cell.
 * Start each sentence with 2–5 words in bold — "**Wrong prop name.** The theme passes `colour` but the component reads `color`, so every spot renders muted."
   * The bold lead states the line's content, never labels it — "**Three commits pushed straight to main.**", not "**What happened.**", "**What went wrong.**" or "**Why.**"
 * An action the user must take leads its bullet in bold, never buried mid-paragraph — "**Open a new chat with No folder, then come back.** The watcher is armed and captures the instant a No-folder composer is focused.", not that same step parenthesized inside the explanation.
