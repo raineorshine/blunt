@@ -1,0 +1,32 @@
+# Tags v<version> when a version bump lands on main. Cloud sessions cannot push
+# tags — the agent proxy scopes their git credential to the session's own branch
+# and refuses refs/tags/* — so the tag is created here instead of by ./ship.
+name: Tag release
+
+on:
+  push:
+    branches: [main]
+    paths: ['plugins/blunt/.claude-plugin/plugin.json']
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag the version in plugin.json
+        run: |
+          set -euo pipefail
+          tag="v$(jq -r .version plugins/blunt/.claude-plugin/plugin.json)"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            echo "$tag already tagged; nothing to do."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git tag -a "$tag" -m "$tag"
+          git push origin "$tag"
+          echo "Tagged $tag at $(git rev-parse --short HEAD)."

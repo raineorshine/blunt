@@ -11,6 +11,7 @@ one file of injected guidelines; everything else is packaging.
 | `plugins/blunt/hooks/hooks.json` | `SessionStart` hook that cats them into context |
 | `plugins/blunt/.claude-plugin/plugin.json` | version; gates `claude plugin update` |
 | `build.sh` | syncs `communication.md` into the README |
+| `.github/workflows/tag-release.yml` | tags `v<version>` when a bump lands on `main` |
 | `docs/grading-methodology.md` | how to evaluate a change to the guidelines |
 
 ## Editing the guidelines
@@ -22,6 +23,10 @@ one file of injected guidelines; everything else is packaging.
 3. Bump the version in `plugins/blunt/.claude-plugin/plugin.json` for anything
    that should ship. Without a bump, `claude plugin update` reports "already at
    the latest version" even when `main` has new commits. `/ship` does this.
+
+Landing that bump on `main` tags the release from CI. Never tag by hand: a cloud
+session cannot push `refs/tags/*` at all, so a tag step in the local workflow is
+one more thing that silently only works from a laptop.
 
 Match the file's style: one guideline per bullet, terse fragments, a short
 inline example only where it sharpens the rule.
