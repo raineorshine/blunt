@@ -82,8 +82,8 @@ stage implies the earlier one.
 
 The lifecycle ✏️ → 🚀 is set by skills where one owns the stage (`update` sets ✏️ before it edits;
 `ship` sets 🚀 before it builds and puts it back if the push fails), so it stays true on its own.
-📚 is set by hand the moment the `learn` skill is invoked — before reading anything or making any
-edit. The rest are set by hand when they apply, and nothing reconciles a title against reality —
+📚 is set in the response that invokes the `learn` skill — before reading anything or making any
+edit. The rest are set in the response that enters the stage, and nothing reconciles a title against reality —
 an abandoned session keeps whatever prefix it had. 🚙 in particular is worth setting before handing
 work back: the idle dot cannot tell "waiting on you" from "given up on". ⏲️ is the clock's
 version of it: a task scheduled for later with nothing to do until it fires. 🚙 takes precedence
