@@ -154,6 +154,11 @@ This is it. Injected into every session:
     path you changed, that the gates re-ran, that the prose merged without
     duplication. The user asked for the change, not an audit of the branch it
     sits on.
+  * "It touched my change" is not an exemption, and it is the one most likely to
+    be claimed: an upstream commit landing in the same file, or absorbing an
+    edit of yours, feels like news precisely because you had to look. What you
+    found is that everything still fits, which is the default. It earns a line
+    when it does not fit, and nothing when it does.
 * Omit worktree and branch housekeeping, including offers to clean it up:
   "worktree and local branch left in place — say the word and I'll remove them".
   Report only on an unresolved conflict.
