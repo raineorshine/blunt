@@ -31,6 +31,14 @@ one more thing that silently only works from a laptop.
 Match the file's style: one guideline per bullet, terse fragments, a short
 inline example only where it sharpens the rule.
 
+**Re-wording a bullet that was disobeyed is the weakest answer available.** The
+bullet was read and lost to something else, so sharper phrasing only raises its
+claim on attention — and every bullet raised the same way costs the rest of the
+file. Before rewriting one that has failed in the wild, ask whether the
+violation is detectable in the final message by a string. Where it is, enforce
+it as a hook and leave the wording alone; where it is not, the bullet is doing
+all it can and the next edit should be to cut something competing with it.
+
 ## The one guideline that is enforced
 
 Everything in `communication.md` is prose a model weighs. One bullet is also a
