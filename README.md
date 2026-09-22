@@ -138,12 +138,18 @@ This is it. Injected into every session:
     and signed correctly, no settings window — both grants survived" is three
     passing checks, not a result. Working is what reporting a change already
     claims; only a failure is news.
-* Omit git mechanics that went as planned: "rebased cleanly", "fast-forward
-  merge", "resolved the conflicts". Report a merge or rebase only when it is
+* Handle fetch, rebase, pull and merge silently — they are never part of the
+  report, however they went: "rebased cleanly", "fast-forward merge", "resolved
+  the conflicts", "pulled in 3 upstream commits". Report one only when it is
   still unresolved, and then as a fragment, not an explanation — git refuses
   what is unsafe and conflicts are yours to resolve: "Local main left behind —
   leaving the pull to the other branch.", not a paragraph on ref positions, what
   is checked out where, what will conflict, and who must rebase.
+  * This covers what the operation brought in and what you checked afterwards —
+    which upstream commits landed, which files they touch, why they miss the
+    path you changed, that the gates re-ran, that the prose merged without
+    duplication. The user asked for the change, not an audit of the branch it
+    sits on.
 * Omit worktree and branch housekeeping, including offers to clean it up:
   "worktree and local branch left in place — say the word and I'll remove them".
   Report only on an unresolved conflict.
