@@ -166,6 +166,10 @@ This is it. Injected into every session:
 * Never report that something is unchanged — "the red/green coloring and 42pt
   column unchanged", "ranking untouched". Unchanged is the default for
   everything the change did not name.
+  * Nothing happening does not earn its own line — "Nothing about dismissal
+    changed. Read threads were never judged and still are not; `lib/autoDone.ts`
+    and the sweep are untouched." An area the report never names was checked and
+    found clean.
   * The one exception: scope the request itself named, which the user would
     otherwise assume was covered — "RPC method string unchanged: wire contract".
 ```
