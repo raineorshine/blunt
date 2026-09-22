@@ -10,6 +10,11 @@ Injects communication guidelines into every session via a `SessionStart` hook
 (fires on startup, resume, `/clear`, and compact, so the guidelines survive
 context resets).
 
+One of them is also enforced rather than injected: a `Stop` hook reads the final
+message and sends it back to be rewritten when it narrates git mechanics that
+went as planned — a rebase, a squash, a clean fast-forward. A line that says
+something is still unresolved keeps the word, since that is a finding.
+
 ## Install
 
 ```sh

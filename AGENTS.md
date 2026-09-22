@@ -8,7 +8,8 @@ one file of injected guidelines; everything else is packaging.
 | path | what |
 |---|---|
 | `plugins/blunt/context/communication.md` | the guidelines — the actual product |
-| `plugins/blunt/hooks/hooks.json` | `SessionStart` hook that cats them into context |
+| `plugins/blunt/hooks/hooks.json` | `SessionStart` hook that cats them into context, and the `Stop` hook below |
+| `plugins/blunt/hooks/report-check.mjs` | `Stop` hook that refuses a report narrating git mechanics |
 | `plugins/blunt/.claude-plugin/plugin.json` | version; gates `claude plugin update` |
 | `build.sh` | syncs `communication.md` into the README |
 | `.github/workflows/tag-release.yml` | tags `v<version>` when a bump lands on `main` |
@@ -29,6 +30,34 @@ one more thing that silently only works from a laptop.
 
 Match the file's style: one guideline per bullet, terse fragments, a short
 inline example only where it sharpens the rule.
+
+## The one guideline that is enforced
+
+Everything in `communication.md` is prose a model weighs. One bullet is also a
+hook: `report-check.mjs` reads the last assistant message when the session
+stops, and exits 2 — which returns the reason as feedback and gets the message
+rewritten — when a line names git mechanics that went as planned. Injected
+wording did not hold it. The bullet had been in the file for five releases,
+worded and re-worded, and was still being disobeyed in the middle of otherwise
+obedient reports; the hook does not weigh anything, which is the whole of why
+it works.
+
+- **The exception is encoded, not judged.** A line may carry `rebase` when it
+  also carries a word saying something is unresolved — failed, refused, still,
+  left behind. Coarse on purpose: the way past the block is to say what is
+  broken, which is the only case the bullet ever allowed.
+- **`stop_hook_active` ends the loop.** A second stop is let through, so a
+  rewrite the hook still dislikes reaches the user rather than spinning.
+- **Anything it cannot read is not a veto** — no transcript, an unparseable
+  line, a turn with no text: exit 0.
+- **Test it against a transcript, not by reasoning.** A JSONL file of one
+  `{"type":"assistant"}` entry piped in with `{"stop_hook_active":false,
+  "transcript_path":...}` is the whole harness. Then try it for real with
+  `claude --plugin-dir plugins/blunt -p`, which fires the hook on its own final
+  message.
+- **Add a term only after a report actually carried it.** The list is what has
+  been observed, not what could conceivably be narrated; a term nobody has
+  written is a false positive waiting to happen.
 
 ## Evaluating a change
 
