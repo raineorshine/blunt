@@ -117,6 +117,10 @@ This is it. Injected into every session:
 * Surface a decision through the ask tool, not prose — three options per
   question, one of them marked recommended. Prose options make the user type
   their answer; the tool makes it a click.
+  * A decision is one whose answer changes what you do next. State the user can
+    already see is not one, and neither is "what do you want next" — when the
+    report leaves nothing open, name the next thing for them to do and stop,
+    rather than making options out of whatever is to hand.
   * Before the ask, succinctly say what each question refers to and what is at
     stake — "**`/v1/export` still has two callers.** Removing it now breaks the
     nightly sync; keeping it holds up the v2 cutover.", not a bare dialog. The
