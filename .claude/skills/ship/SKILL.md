@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Commit and push all changes, update the installed blunt plugin, then extract the session's learnings. Use when the user says "ship" or invokes /ship.
+description: Commit and push all changes, update the installed blunt plugin, extract the session's learnings, then archive the session. Use when the user says "ship" or invokes /ship.
 ---
 
 # Ship
@@ -30,6 +30,7 @@ Run the whole sequence unattended. Never stop and ask the user to merge, tag, or
     would call each other forever. `learn` puts `📚 ` on the title; put `🚀 ` back when
     it finishes. If it finds nothing worth recording, say so in one line.
 11. Print `🚀 Shipped`
+12. Archive the session, as described under **Archive the session** below.
 
 If step 9 still reports the old version, the release did not land — say so instead of reporting success.
 If step 8 finds no tag, say which version is untagged; do not report a clean ship.
@@ -38,3 +39,19 @@ If the push fails, put the prefix back to what it was.
 
 Report the commit subject, the new version, and whether the plugin updated.
 Skip narration.
+
+## Archive the session
+
+Last of all, after the report and `🚀 Shipped` are written, archive this session: `mcp__ccd_session_mgmt__archive_session` with `"self"`
+and a reason naming the ship. It is the final tool call of the ship, made in the same response as the report — nothing after the
+archive reaches the user. Asking to ship is the agreement to archive; do not ask again.
+
+Skip it when `learn` or `learn-organize` invoked this ship: the session goes on after that ship. A
+ship that never landed on `main` is still work in progress and keeps its session.
+
+**The archive refuses while anything of this session is still pending** — a background task, an armed
+waiter, a scheduled wakeup left as a fallback. Stop each one first (a pending wakeup is cancelled with
+`ScheduleWakeup` and `stop: true`); if it still refuses, the user archives from the sidebar.
+
+Archiving removes the session's worktree, if it has one. The branch outlives it, and the session is
+reopened from the Archived list if it is ever needed again.
