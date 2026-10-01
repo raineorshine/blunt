@@ -18,6 +18,14 @@ Run the whole sequence unattended. Never stop and ask the user to merge, tag, or
    - Locally: `git push origin HEAD:main`.
    - From a cloud session that is refused: open a PR for the branch and merge it
      with the GitHub tools. Rebase-merge, to keep `main` linear.
+
+   Then fast-forward the local `main` to what landed, so the next session branches off it and not off a stale `main`:
+
+   ```bash
+   git fetch origin main && MAIN=$(git worktree list --porcelain | awk '/^worktree /{w=substr($0,10)} $0=="branch refs/heads/main"{print w}') && if [ -z "$MAIN" ]; then git fetch origin main:main; elif [ -n "$(git -C "$MAIN" status --porcelain --untracked-files=no)" ]; then echo "local main left behind: $MAIN has local changes"; else git -C "$MAIN" merge --ff-only origin/main; fi
+   ```
+
+   It finds `main` wherever it is checked out, and moves the ref alone when `main` is checked out nowhere. Untracked files don't block it. When it reports local changes, or the fast-forward refuses because local `main` has commits of its own, leave it and say in one line that the local `main` was left behind. Never reset, stash, commit or `checkout --` in that checkout: the changes may be another session's work.
 8. Confirm the tag. `.github/workflows/tag-release.yml` tags `v<version>` when the
    version bump lands on `main`; never tag by hand.
    `git fetch origin --tags --force && git tag -l v<version>` — retry for up to a
