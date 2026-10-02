@@ -55,7 +55,11 @@ it works.
   left behind. Coarse on purpose: the way past the block is to say what is
   broken, which is the only case the bullet ever allowed.
 - **`stop_hook_active` ends the loop.** A second stop is let through, so a
-  rewrite the hook still dislikes reaches the user rather than spinning.
+  rewrite the hook still dislikes reaches the user rather than spinning. The
+  flag stays true for the whole continuation, tool calls included —
+  so every later stop in it goes unchecked, not just the
+  rewrite. Verified with `claude -p --settings <file>` and a Stop hook that
+  logs the flag, blocks once, and asks for a Bash call.
 - **Anything it cannot read is not a veto** — no transcript, an unparseable
   line, a turn with no text: exit 0.
 - **Test it against a transcript, not by reasoning.** A JSONL file of one
