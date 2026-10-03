@@ -9,7 +9,7 @@ one file of injected guidelines; everything else is packaging.
 |---|---|
 | `plugins/blunt/context/communication.md` | the guidelines — the actual product |
 | `plugins/blunt/hooks/hooks.json` | `SessionStart` hook that cats them into context, and the `Stop` hook below |
-| `plugins/blunt/hooks/report-check.mjs` | `Stop` hook that refuses a report narrating git mechanics |
+| `plugins/blunt/hooks/Stop/no-git-noise.mjs` | `Stop` hook that refuses a report narrating git mechanics |
 | `plugins/blunt/.claude-plugin/plugin.json` | version; gates `claude plugin update` |
 | `build.sh` | syncs `communication.md` into the README |
 | `.github/workflows/tag-release.yml` | tags `v<version>` when a bump lands on `main` |
@@ -42,7 +42,7 @@ all it can and the next edit should be to cut something competing with it.
 ## The one guideline that is enforced
 
 Everything in `communication.md` is prose a model weighs. One bullet is also a
-hook: `report-check.mjs` reads the last assistant message when the session
+hook: `no-git-noise.mjs` reads the last assistant message when the session
 stops, and exits 2 — which returns the reason as feedback and gets the message
 rewritten — when a line names git mechanics that went as planned. Injected
 wording did not hold it. The bullet had been in the file for five releases,
@@ -63,7 +63,7 @@ it works.
   `hookErrors`; the summary is written before the next stop fires. Match on
   that entry type only — a tool result that prints this file, or a message
   quoting the reason, carries the same string. Verified with
-  `claude -p --settings <file>` adding a Stop hook that blocks once: report-check
+  `claude -p --settings <file>` adding a Stop hook that blocks once: no-git-noise
   then blocks under the flag, and an identical rewrite goes through.
 - **A block shows the report twice.** Stop fires after the message is on
   screen, so the user sees the blocked report and then the whole rewrite below
