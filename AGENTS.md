@@ -14,6 +14,9 @@ one file of injected guidelines; everything else is packaging.
 | `build.sh` | syncs `communication.md` into the README |
 | `.github/workflows/tag-release.yml` | tags `v<version>` when a bump lands on `main` |
 
+A hook script lives at `hooks/<Event>/<what-it-enforces>.mjs` — named for the
+behavior it guards, not for the mechanism (`no-git-noise`, not `report-check`).
+
 ## Editing the guidelines
 
 1. Edit `plugins/blunt/context/communication.md`.
