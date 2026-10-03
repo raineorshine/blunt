@@ -27,6 +27,15 @@ behavior it guards, not for the mechanism (`no-git-noise`, not `report-check`).
    that should ship. Without a bump, `claude plugin update` reports "already at
    the latest version" even when `main` has new commits. `/ship` does this.
 
+A session that sat while `main` moved on conflicts in all three files, and each
+resolves differently. `communication.md`: both sides are real guidelines — keep
+the ones from `main` and re-place yours among them. `plugin.json`: take the
+version from `main` and bump *that*, never your branch's number, which a stale
+base makes lower than what already shipped — and a lower version on `main` makes
+`claude plugin update` answer "already at the latest version" forever.
+`README.md`: never resolve by hand — `git checkout origin/main -- README.md`,
+then `./build.sh` regenerates it from the file you just merged.
+
 Landing that bump on `main` tags the release from CI. Never tag by hand: a cloud
 session cannot push `refs/tags/*` at all, so a tag step in the local workflow is
 one more thing that silently only works from a laptop.
@@ -111,6 +120,11 @@ never fabricate the outputs.
 The guidelines are injected into your session too. When they are active, they
 govern the last message before control returns to the user — not your
 narration between tool calls, which stays fully detailed.
+
+What the `SessionStart` hook injects is the **installed** plugin's copy, not the
+working tree's. A bullet you just wrote is missing from it, and bullets you have
+never seen are in it — that is the installed version differing from your branch,
+not an edit that failed to land. Check the file, not the injection.
 
 ## Reporting
 
