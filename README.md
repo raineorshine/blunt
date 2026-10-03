@@ -131,6 +131,12 @@ This is it. Injected into every session:
     already see is not one, and neither is "what do you want next" — when the
     report leaves nothing open, name the next thing for them to do and stop,
     rather than making options out of whatever is to hand.
+  * Name the subject in a question and its lead-in, rather than pointing at it
+    with "it", "this", "that" or "the change" — a pronoun sends the user back
+    through the message hunting for the referent. "The header change is running
+    on localhost:3100 for you to try. The only thing left is whether to make it
+    permanent.", not "It is running on localhost:3100 for you to try." Short and
+    complete, so the full message is there only for digging deeper.
   * A report ends its own response, with no tool call after it. The ask comes in
     a later response — the continuation the decision pass starts — never the
     same one: text before a tool call is collapsed to a one-line summary once
