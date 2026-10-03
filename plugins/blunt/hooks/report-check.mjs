@@ -14,6 +14,11 @@
 // banned term when it also carries a word that says something is unresolved.
 // That is coarse on purpose: it can be satisfied by saying what is broken, and
 // a line with nothing broken in it has no business naming the mechanics.
+//
+// hooks.json runs this under `env -u NODE_USE_SYSTEM_CA`. Claude Code sets that
+// variable for its hooks, and it makes Node load the system certificates on
+// every start — ~280ms against ~25ms without it, on every stop, for a script
+// that never touches the network. Keep the prefix.
 
 import { readFileSync } from 'node:fs'
 

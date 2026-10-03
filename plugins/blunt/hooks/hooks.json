@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/report-check.mjs\""
+            "command": "env -u NODE_USE_SYSTEM_CA node \"${CLAUDE_PLUGIN_ROOT}/hooks/report-check.mjs\""
           }
         ]
       }
