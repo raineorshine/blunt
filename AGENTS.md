@@ -54,12 +54,17 @@ it works.
   also carries a word saying something is unresolved — failed, refused, still,
   left behind. Coarse on purpose: the way past the block is to say what is
   broken, which is the only case the bullet ever allowed.
-- **`stop_hook_active` ends the loop.** A second stop is let through, so a
-  rewrite the hook still dislikes reaches the user rather than spinning. The
-  flag stays true for the whole continuation, tool calls included —
-  so every later stop in it goes unchecked, not just the
-  rewrite. Verified with `claude -p --settings <file>` and a Stop hook that
-  logs the flag, blocks once, and asks for a Bash call.
+- **Its own earlier block ends the loop, not `stop_hook_active`.** The flag
+  says *some* Stop hook blocked, and it stays true for the whole continuation,
+  tool calls included — so a decision pass that blocks and opens an ask would
+  wave every later report through unchecked. A `fast-forwarded` report reached
+  a user exactly that way. The hook skips only when the flag is set **and** a
+  `stop_hook_summary` since the last typed prompt carries its own reason in
+  `hookErrors`; the summary is written before the next stop fires. Match on
+  that entry type only — a tool result that prints this file, or a message
+  quoting the reason, carries the same string. Verified with
+  `claude -p --settings <file>` adding a Stop hook that blocks once: report-check
+  then blocks under the flag, and an identical rewrite goes through.
 - **Anything it cannot read is not a veto** — no transcript, an unparseable
   line, a turn with no text: exit 0.
 - **Test it against a transcript, not by reasoning.** A JSONL file of one

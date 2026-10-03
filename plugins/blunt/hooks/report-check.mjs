@@ -49,15 +49,55 @@ const MECHANICS = [
 const UNRESOLVED =
   /\b(unresolved|still|left behind|left alone|left in|failed|failing|refus(e|ed|es)|could not|cannot|blocked|abort(ed)?|stuck|needs|waiting on)\b/i
 
-/** The text of the last thing this session said to the user, or ''. */
-const lastAssistantText = transcriptPath => {
-  let lines
+/** First line of the block reason; also how a later stop recognises the block. */
+const BLOCKED = 'Blocked: the report narrates git mechanics that went as planned.'
+
+/** The transcript as lines, or [] when it cannot be read. */
+const readTranscript = transcriptPath => {
   try {
-    lines = readFileSync(transcriptPath, 'utf8').split('\n')
+    return readFileSync(transcriptPath, 'utf8').split('\n')
   } catch {
     // No transcript, nothing to check. A hook that cannot read is not a veto.
-    return ''
+    return []
   }
+}
+
+/** True for a prompt the user typed, as opposed to a tool result or hook feedback. */
+const isUserPrompt = entry => {
+  if (entry.type !== 'user' || entry.isMeta || entry.isSidechain) return false
+  const content = entry.message?.content
+  if (typeof content === 'string') return true
+  return Array.isArray(content) && content.some(b => b.type === 'text')
+}
+
+/**
+ * Whether this hook already blocked since the user last typed, read from the
+ * stop_hook_summary entries, whose hookErrors carry each blocking hook's stderr.
+ */
+const blockedThisTurn = lines => {
+  for (let i = lines.length - 1; i >= 0; i--) {
+    if (!lines[i].trim()) continue
+    let entry
+    try {
+      entry = JSON.parse(lines[i])
+    } catch {
+      continue
+    }
+    if (isUserPrompt(entry)) return false
+    // Only hook records count: a tool result that prints this file, or a
+    // message quoting the reason, carries the same string.
+    if (
+      entry.type === 'system' &&
+      entry.subtype === 'stop_hook_summary' &&
+      (entry.hookErrors ?? []).some(e => String(e).includes(BLOCKED))
+    )
+      return true
+  }
+  return false
+}
+
+/** The text of the last thing this session said to the user, or ''. */
+const lastAssistantText = lines => {
   for (let i = lines.length - 1; i >= 0; i--) {
     if (!lines[i].trim()) continue
     let entry
@@ -82,12 +122,16 @@ const lastAssistantText = transcriptPath => {
 }
 
 const input = JSON.parse(readFileSync(0, 'utf8'))
+const lines = readTranscript(input.transcript_path)
 
-// Already blocked once this stop. Checking again is how a hook loops forever,
-// and the rewrite has been asked for.
-if (input.stop_hook_active) process.exit(0)
+// stop_hook_active says *some* Stop hook blocked earlier in this continuation,
+// and stays true through every tool call after it — another hook's block (a
+// decision pass that opens an ask) would otherwise wave every later report
+// through unchecked. Skip only when the block was this hook's own: checking
+// again is how a hook loops forever, and the rewrite has been asked for.
+if (input.stop_hook_active && blockedThisTurn(lines)) process.exit(0)
 
-const text = lastAssistantText(input.transcript_path)
+const text = lastAssistantText(lines)
 
 const offending = []
 for (const line of text.split('\n')) {
@@ -100,7 +144,7 @@ if (offending.length === 0) process.exit(0)
 
 console.error(
   [
-    'Blocked: the report narrates git mechanics that went as planned.',
+    BLOCKED,
     '',
     ...offending.map(l => `  ${l}`),
     '',
