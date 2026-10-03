@@ -144,6 +144,12 @@ it works.
   `~/.claude/projects/*/<session_id>.jsonl` shows each `stop_hook_summary` and
   its `hookErrors`, which is the evidence the block happened and the guard
   released the repeat.
+- **Test the guard with four transcripts, whatever the hook.** Under
+  `stop_hook_active:true`: its own reason in a `stop_hook_summary` after the
+  last typed prompt passes; another hook's reason there, its own reason before
+  that prompt, or its reason quoted in an assistant message still blocks. The
+  guard lives in `lib/final-report.mjs`, so the same four catch a regression in
+  any hook.
 - **Add a term only after a report actually carried it.** The list is what has
   been observed, not what could conceivably be narrated; a term nobody has
   written is a false positive waiting to happen.
