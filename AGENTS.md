@@ -65,6 +65,12 @@ it works.
   quoting the reason, carries the same string. Verified with
   `claude -p --settings <file>` adding a Stop hook that blocks once: report-check
   then blocks under the flag, and an identical rewrite goes through.
+- **A block shows the report twice.** Stop fires after the message is on
+  screen, so the user sees the blocked report and then the whole rewrite below
+  it — the price of every block, and why the term list stays to observed
+  terms. Other Stop hooks fire on the same stop and their reasons arrive
+  together; a user-level decision pass that says "do not rewrite" contradicts
+  this one's rewrite.
 - **Anything it cannot read is not a veto** — no transcript, an unparseable
   line, a turn with no text: exit 0.
 - **Test it against a transcript, not by reasoning.** A JSONL file of one
