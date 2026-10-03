@@ -76,6 +76,11 @@ This is it. Injected into every session:
   * The bold lead states the line's content, never labels it — "**Three commits
     pushed straight to main.**", not "**What happened.**", "**What went
     wrong.**" or "**Why.**"
+  * A lead that poses a question — "What X was for:", "Why X was dropped:",
+    "What replaced it:" — is still a label. Answer it in the lead, as a
+    standalone statement dense enough to read alone: "**Replies cannot be routed
+    back to an existing desktop session.**", not "**Why the desktop path was
+    dropped:**".
 * An action the user must take leads its bullet in bold, never buried
   mid-paragraph — "**Open a new chat with No folder, then come back.** The
   watcher is armed and captures the instant a No-folder composer is focused.",

@@ -10,6 +10,7 @@
 * Put the same fields across several things in a table, not in repeated bullets or prose — remotes and URLs, files and what they do, options and their defaults. One row per thing, shortest cell that is still correct, no sentence restating a cell.
 * Start each sentence with 2–5 words in bold — "**Wrong prop name.** The theme passes `colour` but the component reads `color`, so every spot renders muted."
   * The bold lead states the line's content, never labels it — "**Three commits pushed straight to main.**", not "**What happened.**", "**What went wrong.**" or "**Why.**"
+  * A lead that poses a question — "What X was for:", "Why X was dropped:", "What replaced it:" — is still a label. Answer it in the lead, as a standalone statement dense enough to read alone: "**Replies cannot be routed back to an existing desktop session.**", not "**Why the desktop path was dropped:**".
 * An action the user must take leads its bullet in bold, never buried mid-paragraph — "**Open a new chat with No folder, then come back.** The watcher is armed and captures the instant a No-folder composer is focused.", not that same step parenthesized inside the explanation.
 * A command for the user to run goes in its own shell-tagged fence — a ```bash block is clickable; inline backticks and untagged fences are not. One command per block, no `$` prefix, no output pasted in.
 * Lead an aside with "Note:" — not "Two things worth knowing:" or "A few things to flag:". The bullets count themselves.
