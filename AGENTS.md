@@ -8,8 +8,10 @@ one file of injected guidelines; everything else is packaging.
 | path | what |
 |---|---|
 | `plugins/blunt/context/communication.md` | the guidelines — the actual product |
-| `plugins/blunt/hooks/hooks.json` | `SessionStart` hook that cats them into context, and the `Stop` hook below |
+| `plugins/blunt/hooks/hooks.json` | `SessionStart` hook that cats them into context, and the `Stop` hooks below |
 | `plugins/blunt/hooks/Stop/no-git-noise.mjs` | `Stop` hook that refuses a report narrating git mechanics |
+| `plugins/blunt/hooks/Stop/no-check-noise.mjs` | `Stop` hook that refuses a report narrating checks that passed |
+| `plugins/blunt/hooks/lib/final-report.mjs` | what the `Stop` hooks share: transcript, final report, own-block guard |
 | `plugins/blunt/.claude-plugin/plugin.json` | version; gates `claude plugin update` |
 | `build.sh` | syncs `communication.md` into the README |
 | `.github/workflows/tag-release.yml` | tags `v<version>` when a bump lands on `main` |
@@ -51,13 +53,13 @@ violation is detectable in the final message by a string. Where it is, enforce
 it as a hook and leave the wording alone; where it is not, the bullet is doing
 all it can and the next edit should be to cut something competing with it.
 
-## The one guideline that is enforced
+## The guidelines that are enforced
 
-Everything in `communication.md` is prose a model weighs. One bullet is also a
-hook: `no-git-noise.mjs` reads the last assistant message when the session
-stops, and exits 2 — which returns the reason as feedback and gets the message
-rewritten — when a line names git mechanics that went as planned. Injected
-wording did not hold it. The bullet had been in the file for five releases,
+Everything in `communication.md` is prose a model weighs. Two bullets are also
+hooks. The first, `no-git-noise.mjs`, reads the last assistant message when
+the session stops, and exits 2 — which returns the reason as feedback and gets
+the message rewritten — when a line names git mechanics that went as planned.
+Injected wording did not hold it. The bullet had been in the file for five releases,
 worded and re-worded, and was still being disobeyed in the middle of otherwise
 obedient reports; the hook does not weigh anything, which is the whole of why
 it works.
@@ -83,6 +85,37 @@ it works.
   terms. Other Stop hooks fire on the same stop and their reasons arrive
   together; a user-level decision pass that says "do not rewrite" contradicts
   this one's rewrite.
+- **The second, `no-check-noise.mjs`, guards "Report a check only when it
+  failed".** The Omit bullet and its delivered-work sub-bullet were both loaded
+  in a v0.48.0 session that still closed on its tested sample count, all of
+  them passing, and a live run that confirmed it. Its terms come from a sweep
+  of real final messages, each annotated with the phrasing it was taken from.
+- **Its exception is narrower than no-git-noise's.** A passing report
+  routinely carries a failure word — red before green, "the old version
+  failed" — so a failure word excuses only its own clause, split at `. ; ! ?`,
+  and a count of nothing (`0 failed`, `no failures`) is not one. A test passing
+  where it should not — on `main`, or blind to a bug it was meant to catch — is
+  a finding too. A line saying what was *not* tested, run or verified passes
+  whole: that caveat is the one check line the user acts on. So does a line
+  naming checks still running, or a bug.
+- **CI status is left out of its terms on purpose.** "Merged after every check
+  passed" answers the request when the user gated the merge on CI, and a
+  string cannot tell that request from noise.
+- **Sweep the transcripts before changing its terms.** Pull every final
+  message from `~/.claude/projects/*/*.jsonl` (the last assistant text before
+  each typed prompt), pipe each through the hook, and read the lines it
+  refuses. At the first cut it refused about 7% of 1,400 reports, nearly all
+  rightly; every exception above came from a line that sweep got wrong.
+- **Separate hooks, shared machinery.** Each concern gets its own script and its
+  own reason, because the reason is what the model rewrites against — one
+  reason naming two concerns tells it less about either. Everything else lives
+  in `hooks/lib/final-report.mjs`. Splitting costs no extra round: both hooks
+  fire on the same stop and their reasons arrive together, so a report with
+  both kinds of noise is blocked once and rewritten once — checked live, one
+  `stop_hook_summary` carried both reasons and the next stop carried neither.
+  A third showing happens only when a rewrite adds the other kind, which the
+  reasons tell it not to do. Each guard matches its own reason only, so
+  neither hook's block waves the other's check through.
 - **Anything it cannot read is not a veto** — no transcript, an unparseable
   line, a turn with no text: exit 0.
 - **Test it against a transcript, not by reasoning.** A JSONL file of one

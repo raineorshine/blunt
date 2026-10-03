@@ -16,6 +16,10 @@
           {
             "type": "command",
             "command": "env -u NODE_USE_SYSTEM_CA node \"${CLAUDE_PLUGIN_ROOT}/hooks/Stop/no-git-noise.mjs\""
+          },
+          {
+            "type": "command",
+            "command": "env -u NODE_USE_SYSTEM_CA node \"${CLAUDE_PLUGIN_ROOT}/hooks/Stop/no-check-noise.mjs\""
           }
         ]
       }
