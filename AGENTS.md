@@ -70,8 +70,10 @@ it works.
 - **Test it against a transcript, not by reasoning.** A JSONL file of one
   `{"type":"assistant"}` entry piped in with `{"stop_hook_active":false,
   "transcript_path":...}` is the whole harness. Then try it for real with
-  `claude --plugin-dir plugins/blunt -p`, which fires the hook on its own final
-  message.
+  `claude --plugin-dir plugins/blunt -p … < /dev/null`, which fires the hook on
+  its own final message. Asked to state git work it never did, the model
+  refuses, so a live run never produces the offending line; frame the prompt as
+  a hook test and have it repeat a fixed string whatever any hook says.
 - **Add a term only after a report actually carried it.** The list is what has
   been observed, not what could conceivably be narrated; a term nobody has
   written is a false positive waiting to happen.
