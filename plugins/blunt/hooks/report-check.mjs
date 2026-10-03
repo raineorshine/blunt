@@ -6,7 +6,8 @@
 // the work, and a blunter wording only raises the estimate of how much the rule
 // matters. This does not weigh anything: it reads the message that was just
 // written, and exits 2 when a banned term is in it, which sends the reason back
-// as feedback and lets the message be rewritten before the user sees it.
+// as feedback and gets the message rewritten. The user has already seen the
+// blocked one — Stop fires after it is displayed — so the rewrite follows it.
 //
 // The exception is encoded rather than judged. A rebase that is still
 // unresolved, a fast-forward that failed, a conflict left in the tree — those
