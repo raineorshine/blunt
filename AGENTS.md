@@ -70,6 +70,13 @@ it works.
 - **Add a term only after a report actually carried it.** The list is what has
   been observed, not what could conceivably be narrated; a term nobody has
   written is a false positive waiting to happen.
+- **Run a Node hook under `env -u NODE_USE_SYSTEM_CA`.** Claude Code sets it for
+  hooks, and it makes every Node start load the system certificates — about
+  ten times the cost of the script itself, paid on every stop. Only a hook that
+  makes TLS calls needs it.
+- **Describe a test fixture in a report; never quote it.** The hook reads table
+  cells and quotes like any other line, so a report that quotes the blocked
+  sample it tested with gets blocked itself.
 
 ## Evaluating a change
 
