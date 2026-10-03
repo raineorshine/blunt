@@ -105,7 +105,9 @@ it works.
   message from `~/.claude/projects/*/*.jsonl` (the last assistant text before
   each typed prompt), pipe each through the hook, and read the lines it
   refuses. At the first cut it refused about 7% of 1,400 reports, nearly all
-  rightly; every exception above came from a line that sweep got wrong.
+  rightly; every exception above came from a line that sweep got wrong. Run
+  the sweep under `env -u NODE_USE_SYSTEM_CA` too: a Node start per message
+  with the certificates loaded outruns a two-minute command timeout.
 - **Separate hooks, shared machinery.** Each concern gets its own script and its
   own reason, because the reason is what the model rewrites against — one
   reason naming two concerns tells it less about either. Everything else lives
@@ -124,7 +126,11 @@ it works.
   `claude --plugin-dir plugins/blunt -p … < /dev/null`, which fires the hook on
   its own final message. Asked to state git work it never did, the model
   refuses, so a live run never produces the offending line; frame the prompt as
-  a hook test and have it repeat a fixed string whatever any hook says.
+  a hook test and have it repeat a fixed string whatever any hook says. Add
+  `--output-format json` for the `session_id`; that session's transcript under
+  `~/.claude/projects/*/<session_id>.jsonl` shows each `stop_hook_summary` and
+  its `hookErrors`, which is the evidence the block happened and the guard
+  released the repeat.
 - **Add a term only after a report actually carried it.** The list is what has
   been observed, not what could conceivably be narrated; a term nobody has
   written is a false positive waiting to happen.
