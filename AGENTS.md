@@ -11,6 +11,7 @@ one file of injected guidelines; everything else is packaging.
 | `plugins/blunt/hooks/hooks.json` | `SessionStart` hook that cats them into context, and the `Stop` hooks below |
 | `plugins/blunt/hooks/Stop/no-git-noise.mjs` | `Stop` hook that refuses a report narrating git mechanics |
 | `plugins/blunt/hooks/Stop/no-check-noise.mjs` | `Stop` hook that refuses a report narrating checks that passed |
+| `plugins/blunt/hooks/Stop/no-label-leads.mjs` | `Stop` hook that refuses a bold lead posing a question |
 | `plugins/blunt/hooks/lib/final-report.mjs` | what the `Stop` hooks share: transcript, final report, own-block guard |
 | `plugins/blunt/.claude-plugin/plugin.json` | version; gates `claude plugin update` |
 | `build.sh` | syncs `communication.md` into the README |
@@ -55,7 +56,7 @@ all it can and the next edit should be to cut something competing with it.
 
 ## The guidelines that are enforced
 
-Everything in `communication.md` is prose a model weighs. Two bullets are also
+Everything in `communication.md` is prose a model weighs. Three bullets are also
 hooks. The first, `no-git-noise.mjs`, reads the last assistant message when
 the session stops, and exits 2 — which returns the reason as feedback and gets
 the message rewritten — when a line names git mechanics that went as planned.
@@ -108,6 +109,18 @@ it works.
   rightly; every exception above came from a line that sweep got wrong. Run
   the sweep under `env -u NODE_USE_SYSTEM_CA` too: a Node start per message
   with the certificates loaded outruns a two-minute command timeout.
+- **The third, `no-label-leads.mjs`, guards "The bold lead states the line's
+  content, never labels it".** A report closed on three question-shaped leads
+  in a row while both bullets naming that shape were loaded. It refuses a bold
+  span leading a line or list item whose text starts with what, why, where,
+  how, which or who — the words a sweep of real final messages found opening
+  label leads. "When" is left out: reports open conditions with it.
+- **It has no exception, not even a whole sentence.** A "has a verb" escape
+  would have passed the observed leads, which carry verbs; the way past is a
+  rephrase that puts the answer first. A colon rule was rejected as
+  over-broad, so a label with no question word — one of the three observed
+  leads — still goes through. At the first cut it refused about 5% of 1,400
+  reports.
 - **Separate hooks, shared machinery.** Each concern gets its own script and its
   own reason, because the reason is what the model rewrites against — one
   reason naming two concerns tells it less about either. Everything else lives
