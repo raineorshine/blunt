@@ -10,10 +10,12 @@ Injects communication guidelines into every session via a `SessionStart` hook
 (fires on startup, resume, `/clear`, and compact, so the guidelines survive
 context resets).
 
-One of them is also enforced rather than injected: a `Stop` hook reads the final
-message and sends it back to be rewritten when it narrates git mechanics that
-went as planned — a rebase, a squash, a clean fast-forward. A line that says
-something is still unresolved keeps the word, since that is a finding.
+Three of them are also enforced rather than injected: `Stop` hooks read the
+final message and send it back to be rewritten when it narrates git mechanics
+that went as planned (a rebase, a squash, a clean fast-forward), narrates checks
+that passed, or leads a line with a bold question ("**Why:**"). A git term stays
+on a line that says something is still unresolved, and a check on a clause that
+says it failed, since those are findings.
 
 ## Install
 
@@ -231,4 +233,5 @@ Updates are gated on the version in
 [`plugins/blunt/.claude-plugin/plugin.json`](plugins/blunt/.claude-plugin/plugin.json):
 without a bump, `claude plugin update` reports "already at the latest version"
 even when `main` has new commits. Bump the version in any change that should
-ship — `/ship` bumps the minor version and tags the release `v<version>`.
+ship — `/ship` bumps the minor version, and CI tags the release `v<version>`
+when the bump lands on `main`.

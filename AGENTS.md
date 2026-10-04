@@ -16,6 +16,7 @@ one file of injected guidelines; everything else is packaging.
 | `plugins/blunt/.claude-plugin/plugin.json` | version; gates `claude plugin update` |
 | `build.sh` | syncs `communication.md` into the README |
 | `.github/workflows/tag-release.yml` | tags `v<version>` when a bump lands on `main` |
+| `.claude/skills/` | `/update` edits the guidelines, `/ship` releases, `/ship-at-end` does both |
 
 A hook script lives at `hooks/<Event>/<what-it-enforces>.mjs` — named for the
 behavior it guards, not for the mechanism (`no-git-noise`, not `report-check`).
@@ -30,18 +31,11 @@ behavior it guards, not for the mechanism (`no-git-noise`, not `report-check`).
    that should ship. Without a bump, `claude plugin update` reports "already at
    the latest version" even when `main` has new commits. `/ship` does this.
 
-A session that sat while `main` moved on conflicts in all three files, and each
-resolves differently. `communication.md`: both sides are real guidelines — keep
-the ones from `main` and re-place yours among them. `plugin.json`: take the
-version from `main` and bump *that*, never your branch's number, which a stale
-base makes lower than what already shipped — and a lower version on `main` makes
-`claude plugin update` answer "already at the latest version" forever.
-`README.md`: never resolve by hand — `git checkout origin/main -- README.md`,
-then `./build.sh` regenerates it from the file you just merged.
-
 Landing that bump on `main` tags the release from CI. Never tag by hand: a cloud
 session cannot push `refs/tags/*` at all, so a tag step in the local workflow is
-one more thing that silently only works from a laptop.
+one more thing that silently only works from a laptop. The workflow needs the
+repo's Settings > Actions > General > Workflow permissions on "Read and write";
+on the read-only default its tag push fails with a 403.
 
 Match the file's style: one guideline per bullet, terse fragments, a short
 inline example only where it sharpens the rule.
@@ -51,46 +45,57 @@ bullet was read and lost to something else, so sharper phrasing only raises its
 claim on attention — and every bullet raised the same way costs the rest of the
 file. Before rewriting one that has failed in the wild, ask whether the
 violation is detectable in the final message by a string. Where it is, enforce
-it as a hook and leave the wording alone; where it is not, the bullet is doing
-all it can and the next edit should be to cut something competing with it.
+it as a hook (see [Stop hooks](#stop-hooks)) and leave the wording alone; where
+it is not, the bullet is doing all it can and the next edit should be to cut
+something competing with it.
 
-## The guidelines that are enforced
+### Resolving a stale branch
+
+A session that sat while `main` moved on conflicts in `communication.md`,
+`plugin.json` and `README.md`, and each resolves differently.
+
+- **`communication.md`:** both sides are real guidelines — keep the ones from
+  `main` and re-place yours among them.
+- **`plugin.json`:** take the version from `main` and bump *that*, never your
+  branch's number, which a stale base makes lower than what already shipped —
+  and a lower version on `main` makes `claude plugin update` answer "already at
+  the latest version" forever.
+- **`README.md`:** never resolve by hand — `git checkout origin/main --
+  README.md`, then `./build.sh` regenerates it from the file you just merged.
+
+## Stop hooks
 
 Everything in `communication.md` is prose a model weighs. Three bullets are also
-hooks. The first, `no-git-noise.mjs`, reads the last assistant message when
-the session stops, and exits 2 — which returns the reason as feedback and gets
-the message rewritten — when a line names git mechanics that went as planned.
-Injected wording did not hold it. The bullet had been in the file for five releases,
+enforced: a `Stop` hook reads the last assistant message when the session stops,
+and exits 2 — which returns the reason as feedback and gets the message
+rewritten — when a line breaks the bullet. Injected wording did not hold the
+first of them: the git-mechanics bullet had been in the file for five releases,
 worded and re-worded, and was still being disobeyed in the middle of otherwise
-obedient reports; the hook does not weigh anything, which is the whole of why
-it works.
+obedient reports. A hook does not weigh anything, which is the whole of why it
+works.
+
+| hook | guards the bullet | refuses a line that |
+|---|---|---|
+| `no-git-noise.mjs` | "Handle fetch, rebase, pull and merge silently" | names git mechanics that went as planned |
+| `no-check-noise.mjs` | "Report a check only when it failed" | narrates checks that passed |
+| `no-label-leads.mjs` | "The bold lead states the line's content, never labels it" | leads with a bold question |
+
+### no-git-noise
 
 - **The exception is encoded, not judged.** A line may carry `rebase` when it
   also carries a word saying something is unresolved — failed, refused, still,
   left behind. Coarse on purpose: the way past the block is to say what is
   broken, which is the only case the bullet ever allowed.
-- **Its own earlier block ends the loop, not `stop_hook_active`.** The flag
-  says *some* Stop hook blocked, and it stays true for the whole continuation,
-  tool calls included — so a decision pass that blocks and opens an ask would
-  wave every later report through unchecked. A `fast-forwarded` report reached
-  a user exactly that way. The hook skips only when the flag is set **and** a
-  `stop_hook_summary` since the last typed prompt carries its own reason in
-  `hookErrors`; the summary is written before the next stop fires. Match on
-  that entry type only — a tool result that prints this file, or a message
-  quoting the reason, carries the same string. Verified with
-  `claude -p --settings <file>` adding a Stop hook that blocks once: no-git-noise
-  then blocks under the flag, and an identical rewrite goes through.
-- **A block shows the report twice.** Stop fires after the message is on
-  screen, so the user sees the blocked report and then the whole rewrite below
-  it — the price of every block, and why the term list stays to observed
-  terms. Other Stop hooks fire on the same stop and their reasons arrive
-  together; a user-level decision pass that says "do not rewrite" contradicts
-  this one's rewrite.
-- **The second, `no-check-noise.mjs`, guards "Report a check only when it
-  failed".** The Omit bullet and its delivered-work sub-bullet were both loaded
-  in a v0.48.0 session that still closed on its tested sample count, all of
-  them passing, and a live run that confirmed it. Its terms come from a sweep
-  of real final messages, each annotated with the phrasing it was taken from.
+
+### no-check-noise
+
+- **Wording alone did not hold it.** The Omit bullet and its delivered-work
+  sub-bullet were both loaded in a v0.48.0 session that still closed on its
+  tested sample count, all of them passing, and a live run that confirmed it.
+  Its terms come from a sweep of real final messages, each annotated with the
+  phrasing it was taken from. At the first cut it refused about 7% of 1,400
+  reports, nearly all rightly; every exception below came from a line that
+  sweep got wrong.
 - **Its exception is narrower than no-git-noise's.** A passing report
   routinely carries a failure word — red before green, "the old version
   failed" — so a failure word excuses only its own clause, split at `. ; ! ?`,
@@ -102,45 +107,85 @@ it works.
 - **CI status is left out of its terms on purpose.** "Merged after every check
   passed" answers the request when the user gated the merge on CI, and a
   string cannot tell that request from noise.
-- **Sweep the transcripts before changing its terms.** Pull every final
-  message from `~/.claude/projects/*/*.jsonl` (the last assistant text before
-  each typed prompt), pipe each through the hook, and read the lines it
-  refuses. At the first cut it refused about 7% of 1,400 reports, nearly all
-  rightly; every exception above came from a line that sweep got wrong. Run
-  the sweep under `env -u NODE_USE_SYSTEM_CA` too: a Node start per message
-  with the certificates loaded outruns a two-minute command timeout.
-- **The third, `no-label-leads.mjs`, guards "The bold lead states the line's
-  content, never labels it".** A report closed on three question-shaped leads
-  in a row while both bullets naming that shape were loaded. It refuses a bold
-  span leading a line or list item whose text starts with what, why, where,
-  how, which or who — the words a sweep of real final messages found opening
-  label leads. "When" is left out: reports open conditions with it.
+
+### no-label-leads
+
+- **Wording alone did not hold it.** A report closed on three question-shaped
+  leads in a row while both bullets naming that shape were loaded.
+- **It refuses a bold span leading a line or list item whose text starts with
+  what, why, where, how, which or who** — the words a sweep of real final
+  messages found opening label leads. "When" is left out: reports open
+  conditions with it.
 - **It has no exception, not even a whole sentence.** A "has a verb" escape
   would have passed the observed leads, which carry verbs; the way past is a
   rephrase that puts the answer first. A colon rule was rejected as
   over-broad, so a label with no question word — one of the three observed
   leads — still goes through. At the first cut it refused about 5% of 1,400
   reports.
-- **Separate hooks, shared machinery.** Each concern gets its own script and its
-  own reason, because the reason is what the model rewrites against — one
-  reason naming two concerns tells it less about either. Everything else lives
-  in `hooks/lib/final-report.mjs`. Splitting costs no extra round: both hooks
-  fire on the same stop and their reasons arrive together, so a report with
-  both kinds of noise is blocked once and rewritten once — checked live, one
-  `stop_hook_summary` carried both reasons and the next stop carried neither.
-  A third showing happens only when a rewrite adds the other kind, which the
-  reasons tell it not to do. Each guard matches its own reason only, so
-  neither hook's block waves the other's check through.
-- **Anything it cannot read is not a veto** — no transcript, an unparseable
-  line, a turn with no text: exit 0.
+
+### Shared machinery
+
+Everything but the terms, the exception and the reason lives in
+`hooks/lib/final-report.mjs`: a new hook calls `checkFinalReport({ blocked,
+offending, rewrite })` — the reason's first line, a function returning the lines
+to refuse, and the rewrite instruction — and gets its own entry beside the
+others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep `blocked`
+distinct from every other hook's: the guard below finds it by substring.
+
+- **Separate hooks, one reason each.** The reason is what the model rewrites
+  against, and one reason naming two concerns tells it less about either.
+  Splitting costs no extra round: the hooks fire on the same stop and their
+  reasons arrive together, so a report with two kinds of noise is blocked once
+  and rewritten once — checked live, one `stop_hook_summary` carried both
+  reasons and the next stop carried neither. A third showing happens only when
+  a rewrite adds the other kind, which the reasons tell it not to do.
+- **A block shows the report twice.** Stop fires after the message is on
+  screen, so the user sees the blocked report and then the whole rewrite below
+  it — the price of every block, and why the term lists stay to observed
+  terms. A user-level Stop hook's reason arrives alongside, and a decision pass
+  that says "do not rewrite" contradicts this one's rewrite.
+- **A hook's own earlier block ends the loop, not `stop_hook_active`.** The flag
+  says *some* Stop hook blocked, and it stays true for the whole continuation,
+  tool calls included — so a decision pass that blocks and opens an ask would
+  wave every later report through unchecked. A `fast-forwarded` report reached
+  a user exactly that way. A hook skips only when the flag is set **and** a
+  `stop_hook_summary` since the last typed prompt carries its own reason in
+  `hookErrors`; the summary is written before the next stop fires. Match on
+  that entry type only — a tool result that prints the hook file, or a message
+  quoting the reason, carries the same string. Each guard matches its own
+  reason only, so no hook's block waves another's check through. Verified with
+  `claude -p --settings <file>` adding a Stop hook that blocks once:
+  no-git-noise then blocks under the flag, and an identical rewrite goes
+  through.
+- **Anything a hook cannot read is not a veto** — no transcript, an
+  unparseable line, a turn with no text: exit 0.
+- **Run a Node hook under `env -u NODE_USE_SYSTEM_CA`.** Claude Code sets it for
+  hooks, and it makes every Node start load the system certificates — about
+  ten times the cost of the script itself, paid on every stop. Only a hook that
+  makes TLS calls needs it.
+
+### Changing a hook's terms
+
+- **Add a term only after a report actually carried it.** The list is what has
+  been observed, not what could conceivably be narrated; a term nobody has
+  written is a false positive waiting to happen.
+- **Sweep the transcripts first.** Pull every final message from
+  `~/.claude/projects/*/*.jsonl` (the last assistant text before each typed
+  prompt), pipe each through the hook, and read the lines it refuses. Run the
+  sweep under `env -u NODE_USE_SYSTEM_CA` too: a Node start per message with
+  the certificates loaded outruns a two-minute command timeout.
+
+### Testing a hook
+
 - **Test it against a transcript, not by reasoning.** A JSONL file of one
   `{"type":"assistant"}` entry piped in with `{"stop_hook_active":false,
-  "transcript_path":...}` is the whole harness. Then try it for real with
-  `claude --plugin-dir plugins/blunt -p … < /dev/null`, which fires the hook on
-  its own final message. Asked to state git work it never did, the model
-  refuses, so a live run never produces the offending line; frame the prompt as
-  a hook test and have it repeat a fixed string whatever any hook says. Add
-  `--output-format json` for the `session_id`; that session's transcript under
+  "transcript_path":...}` is the whole harness.
+- **Then try it for real** with `claude --plugin-dir plugins/blunt -p … <
+  /dev/null`, which fires the hook on its own final message. Asked to state git
+  work it never did, the model refuses, so a live run never produces the
+  offending line; frame the prompt as a hook test and have it repeat a fixed
+  string whatever any hook says. Add `--output-format json` for the
+  `session_id`; that session's transcript under
   `~/.claude/projects/*/<session_id>.jsonl` shows each `stop_hook_summary` and
   its `hookErrors`, which is the evidence the block happened and the guard
   released the repeat.
@@ -150,13 +195,6 @@ it works.
   that prompt, or its reason quoted in an assistant message still blocks. The
   guard lives in `lib/final-report.mjs`, so the same four catch a regression in
   any hook.
-- **Add a term only after a report actually carried it.** The list is what has
-  been observed, not what could conceivably be narrated; a term nobody has
-  written is a false positive waiting to happen.
-- **Run a Node hook under `env -u NODE_USE_SYSTEM_CA`.** Claude Code sets it for
-  hooks, and it makes every Node start load the system certificates — about
-  ten times the cost of the script itself, paid on every stop. Only a hook that
-  makes TLS calls needs it.
 - **Describe a test fixture in a report; never quote it.** The hook reads table
   cells and quotes like any other line, so a report that quotes the blocked
   sample it tested with gets blocked itself.

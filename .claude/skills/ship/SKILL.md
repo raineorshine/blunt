@@ -11,7 +11,8 @@ Run the whole sequence unattended. Never stop and ask the user to merge, tag, or
 2. `./build.sh`
 3. Bump the minor version in `plugins/blunt/.claude-plugin/plugin.json`.
 4. Commit all changes.
-5. `git fetch origin && git rebase origin/main` — resolve any conflicts.
+5. `git fetch origin && git rebase origin/main` — resolve any conflicts per
+   "Resolving a stale branch" in AGENTS.md.
 6. `git push` (add `--set-upstream origin <branch>` on the first push of a branch).
 7. Land it on `main`. The plugin marketplace serves `main`, so a release left on a
    branch has not shipped.
