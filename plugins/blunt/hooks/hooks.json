@@ -28,5 +28,8 @@
         ]
       }
     ]
-  }
+  },
+  "modules": [
+    "./render/hide-refused-draft.tsx"
+  ]
 }

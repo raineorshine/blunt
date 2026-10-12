@@ -12,6 +12,8 @@ one file of injected guidelines; everything else is packaging.
 | `plugins/blunt/hooks/Stop/no-git-noise.mjs` | `Stop` hook that refuses a report narrating git mechanics |
 | `plugins/blunt/hooks/Stop/no-check-noise.mjs` | `Stop` hook that refuses a report narrating checks that passed |
 | `plugins/blunt/hooks/Stop/no-label-leads.mjs` | `Stop` hook that refuses a bold lead posing a question |
+| `plugins/blunt/hooks/rules/` | each `Stop` hook's terms, exception and reason, with no Node imports so the mod can load them |
+| `plugins/blunt/hooks/render/hide-refused-draft.tsx` | mod that draws a reply the `Stop` hooks will refuse as nothing, so only the rewrite shows |
 | `plugins/blunt/hooks/lib/final-report.mjs` | what the `Stop` hooks share: transcript, final report, own-block guard |
 | `plugins/blunt/.claude-plugin/plugin.json` | version; gates `claude plugin update` |
 | `build.sh` | syncs `communication.md` into the README |
@@ -132,12 +134,13 @@ works.
 
 ### Shared machinery
 
-Everything but the terms, the exception and the reason lives in
-`hooks/lib/final-report.mjs`: a new hook calls `checkFinalReport({ blocked,
-offending, rewrite })` — the reason's first line, a function returning the lines
-to refuse, and the rewrite instruction — and gets its own entry beside the
-others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep `blocked`
-distinct from every other hook's: the guard below finds it by substring.
+The terms, the exception and the reason live in `hooks/rules/<rule>.mjs`,
+exported as `rule = { blocked, offending, rewrite }` — the reason's first line,
+a function returning the lines to refuse, and the rewrite instruction — and
+listed in `rules/index.mjs`. Everything else lives in `hooks/lib/final-report.mjs`:
+a new hook is a stub calling `checkFinalReport(rule)`, with its own entry
+beside the others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep
+`blocked` distinct from every other hook's: the guard below finds it by substring.
 
 - **Separate hooks, one reason each.** The reason is what the model rewrites
   against, and one reason naming two concerns tells it less about either.
@@ -146,11 +149,26 @@ distinct from every other hook's: the guard below finds it by substring.
   and rewritten once — checked live, one `stop_hook_summary` carried both
   reasons and the next stop carried neither. A third showing happens only when
   a rewrite adds the other kind, which the reasons tell it not to do.
-- **A block shows the report twice.** Stop fires after the message is on
-  screen, so the user sees the blocked report and then the whole rewrite below
-  it — the price of every block, and why the term lists stay to observed
-  terms. A user-level Stop hook's reason arrives alongside, and a decision pass
-  that says "do not rewrite" contradicts this one's rewrite.
+- **A refused report is hidden, not shown twice.** Stop fires after the
+  message is on screen, so on its own a block leaves the refused report above
+  the whole rewrite. `render/hide-refused-draft.tsx` is a mod (a function-hook
+  module, named under `modules` in `hooks.json`; the `plugin-authoring` skill
+  has the API): a `ui.render` hook on `AssistantMessage` that draws a reply
+  breaking any rule as nothing, unless the transcript shows that rule's Stop
+  feedback since the last reply with text — that is, unless the reply is the
+  rewrite. Drawing only: the transcript and the model keep the original, and
+  ctrl+o shows it. It imports `rules/index.mjs`, so a term added to a rule is
+  hidden too; a rule file importing anything from Node breaks the mod.
+  - **A `MessageDisplay` hook was tried first and does not work in the desktop
+    app.** It runs and its replacement reaches `claude -p` output, but the app
+    draws the original (Claude desktop 2.31226.1, Claude Code 2.1.295). A
+    throwaway tool call before the rewrite does not fold the draft either.
+  - **A mod cannot import through a symlink;** every file it imports lives in
+    the plugin.
+- **The block's reason still quotes the refused lines** in the "Hook
+  re-prompted Claude" row, collapsed by default in the desktop app. A
+  user-level Stop hook's reason arrives alongside, and a decision pass that
+  says "do not rewrite" contradicts this one's rewrite.
 - **A hook's own earlier block ends the loop, not `stop_hook_active`.** The flag
   says *some* Stop hook blocked, and it stays true for the whole continuation,
   tool calls included — so a decision pass that blocks and opens an ask would

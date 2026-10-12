@@ -7,7 +7,7 @@
 import { readFileSync } from 'node:fs'
 
 /** The transcript as lines, or [] when it cannot be read. */
-const readTranscript = transcriptPath => {
+export const readTranscript = transcriptPath => {
   try {
     return readFileSync(transcriptPath, 'utf8').split('\n')
   } catch {
@@ -29,7 +29,7 @@ const isUserPrompt = entry => {
  * user last typed, read from the stop_hook_summary entries, whose hookErrors
  * carry each blocking hook's stderr.
  */
-const blockedThisTurn = (lines, blocked) => {
+export const blockedThisTurn = (lines, blocked) => {
   for (let i = lines.length - 1; i >= 0; i--) {
     if (!lines[i].trim()) continue
     let entry
