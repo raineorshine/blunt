@@ -150,21 +150,13 @@ beside the others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep
   reasons and the next stop carried neither. A third showing happens only when
   a rewrite adds the other kind, which the reasons tell it not to do.
 - **A refused report is hidden, not shown twice.** Stop fires after the
-  message is on screen, so on its own a block leaves the refused report above
-  the whole rewrite. `render/hide-refused-draft.tsx` is a mod (a function-hook
-  module, named under `modules` in `hooks.json`; the `plugin-authoring` skill
-  has the API): a `ui.render` hook on `AssistantMessage` that draws a reply
-  breaking any rule as nothing, unless the transcript shows that rule's Stop
-  feedback since the last reply with text — that is, unless the reply is the
-  rewrite. Drawing only: the transcript and the model keep the original, and
-  ctrl+o shows it. It imports `rules/index.mjs`, so a term added to a rule is
-  hidden too; a rule file importing anything from Node breaks the mod.
-  - **A `MessageDisplay` hook was tried first and does not work in the desktop
-    app.** It runs and its replacement reaches `claude -p` output, but the app
-    draws the original (Claude desktop 2.31226.1, Claude Code 2.1.295). A
-    throwaway tool call before the rewrite does not fold the draft either.
-  - **A mod cannot import through a symlink;** every file it imports lives in
-    the plugin.
+  message is on screen, so `render/hide-refused-draft.tsx`, a mod (a
+  `ui.render` hook named under `modules` in `hooks.json`), draws a reply that
+  breaks a rule as nothing until that rule's feedback precedes it. Drawing
+  only: the model keeps the original. It imports `rules/index.mjs`, so a rule
+  file importing anything from Node breaks it. Mechanism, dead ends and how to
+  verify a display change — in the desktop app; `claude -p` passed both dead
+  ends — are in [docs/hiding-refused-replies.md](docs/hiding-refused-replies.md).
 - **The block's reason still quotes the refused lines** in the "Hook
   re-prompted Claude" row, collapsed by default in the desktop app. A
   user-level Stop hook's reason arrives alongside, and a decision pass that
