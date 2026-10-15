@@ -39,12 +39,14 @@ one more thing that silently only works from a laptop. The workflow needs the
 repo's Settings > Actions > General > Workflow permissions on "Read and write";
 on the read-only default its tag push fails with a 403.
 
-A release also has to reach each claude.ai account that added this repo as a
-marketplace (Customize > Plugins > Add > Manage marketplaces). Cloud sessions
-load blunt only from there, and desktop sessions have loaded that copy over the
-local install, so a stale account copy is a stale blunt. One account sat on
-0.32.0 for two weeks with "Sync automatically" on: the repo has no webhook, and
-nothing re-synced until "Check for updates" was clicked.
+A bump on `main` reaches cloud sessions by itself: the environment's settings
+list this repo under `extraKnownMarketplaces`, so each container clones `main`
+when it starts. A session started five minutes after 0.53.0 merged loaded
+0.53.0. A copy synced to a claude.ai account (Customize > Plugins > Add >
+Manage marketplaces) is another matter: the repo has no webhook, so that copy
+re-syncs only on "Check for updates". One account sat on 0.32.0 for two weeks
+with "Sync automatically" on, and desktop sessions have loaded that copy over
+the local install.
 
 Match the file's style: one guideline per bullet, terse fragments, a short
 inline example only where it sharpens the rule.
