@@ -100,6 +100,23 @@ export const checkFinalReport = ({ blocked, offending, rewrite }) => {
   const found = offending(lastAssistantText(lines))
   if (found.length === 0) process.exit(0)
 
-  console.error([blocked, '', ...found.map(l => `  ${l}`), '', ...rewrite].join('\n'))
+  console.error([blocked, '', ...found.map(l => `  ${l}`), '', ...rewrite, ...remoteRewrite()].join('\n'))
   process.exit(2)
 }
+
+const PREFIX = 'TO PUT IT BLUNTLY…'
+
+/**
+ * In a cloud session no app asks the engine to draw, so the mod that hides a
+ * refused reply never runs and the user sees it above its rewrite. Mark the
+ * rewrite as the one that stands.
+ */
+const remoteRewrite = () =>
+  process.env.CLAUDE_CODE_REMOTE === 'true'
+    ? [
+        '',
+        `Begin the rewrite with ${PREFIX} on a line of its own: the refused`,
+        'reply stays on screen here, and that line tells the reader the rest',
+        'replaces it.',
+      ]
+    : []
