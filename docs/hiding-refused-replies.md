@@ -3,7 +3,8 @@
 A Stop hook fires after the reply is on screen, so a block used to show the
 user the refused draft, the "Hook re-prompted Claude" row, and then the whole
 rewrite. `plugins/blunt/hooks/render/hide-refused-draft.tsx` fixes that in the
-desktop app and the terminal. This file is how it got there, so the dead ends
+desktop app and the terminal — not in a cloud session, whatever app views it
+(see [Cloud sessions](#cloud-sessions-nothing-asks-to-draw)). This file is how it got there, so the dead ends
 are not retried.
 
 ## What works: a mod
@@ -30,6 +31,31 @@ drawing changes; the stored message, and what the model reads, does not.
   each edit reloads when the turn ends. Delete the dev copy once the mod moves
   into the plugin, or a session runs both.
 
+## Cloud sessions: nothing asks to draw
+
+A cloud session shows the refused draft and the whole rewrite, on the iPhone
+app and anywhere else it is viewed. The mod loads there and is never called.
+
+- **A remote app draws through the engine only by asking.** It sends a
+  `ui_attach` control request to join the roster, then a `ui_render` for each
+  thing it draws; that ask is what raises `ui.render`. The types' "raised on
+  every attached surface" means surfaces that attached this way.
+- **A cloud session has no surface.** Its container runs Claude Code headless
+  (`--sdk-url`, `--input-format=stream-json`, `--output-format=stream-json`);
+  the apps draw the transcript from that event stream themselves. The debug
+  log says `session.start: raised (surface none, not interactive)`, and the
+  only control request that arrives is the one at startup — no `ui_attach`,
+  no `ui_render` (Claude Code 2.1.300).
+- **So no rewrite can show.** A probe mod's labelled `AssistantMessage`
+  rewrite drew the original text on the iPhone, and its log of every
+  `ui.render` call was never written.
+- **Read the evidence from inside the session.** The engine's stdout and
+  stderr, `--debug` included, go to `/tmp/claude-preload.out` in the
+  container; a mod hooked on `ui.render` that is ever called gets a
+  `hooks module <plugin> ui.render settled` line there.
+- **A Stop hook can tell it is in one:** `CLAUDE_CODE_REMOTE=true` is in its
+  environment.
+
 ## Dead ends
 
 | Tried | Why it fails |
@@ -38,6 +64,7 @@ drawing changes; the stored message, and what the model reads, does not.
 | A `MessageDisplay` hook returning `displayContent: ""` | It runs in the desktop app, with `final: true` and the whole reply in `delta`, but the app draws the original, whether the hook returns `""` or a replacement (Claude desktop 2.31226.1, Claude Code 2.1.295). It works in the CLI and in `claude -p` output; there the streamed `stream_event` deltas still carry the draft. Bug report drafted in `~/.agents/docs/messagedisplay-desktop-bug-report.md`. |
 | Rewrite only the changed lines | The noisy draft still shows. |
 | Stop's `suppressOutput` | Documented as having no effect. |
+| A `session.append` hook emptying the draft, for cloud sessions | It rewrites the stored row, so the model loses its draft and the Stop hooks read an empty reply and let it through; and an SDK stream may show the row before its rewrite anyway. |
 | An `ANTHROPIC_BASE_URL` proxy, output styles | Both change what the model sees. |
 
 ## Verifying a display change
