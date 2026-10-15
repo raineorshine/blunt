@@ -154,7 +154,9 @@ beside the others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep
   `ui.render` hook named under `modules` in `hooks.json`), draws a reply that
   breaks a rule as nothing until that rule's feedback precedes it. Drawing
   only: the model keeps the original. A cloud session never calls it — no app
-  viewing one asks the engine to draw — so there the user sees both. It imports `rules/index.mjs`, so a rule
+  viewing one asks the engine to draw — so there the user sees both, and
+  `lib/final-report.mjs`, on `CLAUDE_CODE_REMOTE=true`, has the rewrite open
+  with `TO PUT IT BLUNTLY…` to mark it as the one that stands. It imports `rules/index.mjs`, so a rule
   file importing anything from Node breaks it. Mechanism, dead ends and how to
   verify a display change — in the desktop app; `claude -p` passed both dead
   ends — are in [docs/hiding-refused-replies.md](docs/hiding-refused-replies.md).

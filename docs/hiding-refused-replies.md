@@ -53,8 +53,14 @@ app and anywhere else it is viewed. The mod loads there and is never called.
   stderr, `--debug` included, go to `/tmp/claude-preload.out` in the
   container; a mod hooked on `ui.render` that is ever called gets a
   `hooks module <plugin> ui.render settled` line there.
-- **A Stop hook can tell it is in one:** `CLAUDE_CODE_REMOTE=true` is in its
-  environment.
+- **A probe mod confirmed it with hot reloading on.** Its log got one line,
+  `session.start surface=null surfaces=[]`, and nothing more through a turn
+  typed in the iPhone app.
+- **The fallback marks the rewrite instead.** A Stop hook sees
+  `CLAUDE_CODE_REMOTE=true` in its environment, and there the block's reason
+  asks for the rewrite to open with `TO PUT IT BLUNTLY…` on its own line, so
+  the reader knows the reply above it is withdrawn. Checked with `claude -p
+  --plugin-dir` in a cloud container: the rewrite opened with it.
 
 ## Dead ends
 
