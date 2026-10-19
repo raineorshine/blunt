@@ -66,7 +66,7 @@ app and anywhere else it is viewed. The mod loads there and is never called.
 
 | Tried | Why it fails |
 |---|---|
-| Rewrite instruction asks for a throwaway tool call first, hoping the app folds the draft | The desktop app does not fold plain text that a tool call follows; only the hook's reason row shrank to one line. communication.md's "folds any text that a tool call follows" holds for the ask tool, not for plain text. |
+| Rewrite instruction asks for a throwaway tool call first, hoping the app folds the draft | The desktop app does not fold plain text that a tool call follows; only the hook's reason row shrank to one line. Whether the app folds text before an ask is unverified; communication.md dropped that claim in 0.54.0. |
 | A `MessageDisplay` hook returning `displayContent: ""` | It runs in the desktop app, with `final: true` and the whole reply in `delta`, but the app draws the original, whether the hook returns `""` or a replacement (Claude desktop 2.31226.1, Claude Code 2.1.295). It works in the CLI and in `claude -p` output; there the streamed `stream_event` deltas still carry the draft. Bug report drafted in `~/.agents/docs/messagedisplay-desktop-bug-report.md`. |
 | Rewrite only the changed lines | The noisy draft still shows. |
 | Stop's `suppressOutput` | Documented as having no effect. |

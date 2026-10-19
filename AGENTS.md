@@ -60,6 +60,12 @@ it as a hook (see [Stop hooks](#stop-hooks)) and leave the wording alone; where
 it is not, the bullet is doing all it can and the next edit should be to cut
 something competing with it.
 
+**A bullet obeyed into bad behavior is fixed at its premise.** When a reply
+misbehaves, trace it to the bullet behind it first: a claim that text before an
+ask goes unread made asks carry tables, then whole reports once tables were
+banned. A mechanism claim given as a reason drives behavior past its literal
+instruction — remove it, or verify it in the app it describes.
+
 ### Resolving a stale branch
 
 A session that sat while `main` moved on conflicts in `communication.md`,
@@ -233,6 +239,10 @@ so a run with the flag and a run without differ by exactly that. Give both the
 same real task in a real repo and read what came out. Fabricate the inputs;
 never fabricate the outputs.
 
+`claude -p` has no ask tool, even with `--allowedTools AskUserQuestion`: the
+options come out as prose. A headless run checks the text before an ask, never
+the ask's layout or how the desktop app draws it.
+
 ## Testing your own output
 
 The guidelines are injected into your session too. When they are active, they
@@ -246,9 +256,7 @@ not an edit that failed to land. Check the file, not the injection.
 
 ## Reporting
 
-Never suggest restarting Claude Code — not as "restart to apply", a caveat, or
-the closing call to action ("Ready for you to restart Claude Code…"). The
-version bump is the outcome; the restart is `claude plugin update`'s own advice.
+Never suggest restarting Claude Code; that is `claude plugin update`'s own advice.
 After `/ship`, end on the last bullet — no "Done.", no "Ready to …" line; nothing is waiting on the user.
 
 ## Session titles
@@ -278,19 +286,8 @@ what the app cannot know: where the work stands.
 listed so the vocabulary reads the same in every repo, and are ready the day a workflow grows into
 one.
 
-**A design loop is not a park.** 🎨 holds through brainstorming and outranks 🚙 while it
-does: the back-and-forth _is_ the stage, so a park prefix on every turn of it marks the session as
-blocked without saying on what. It becomes 🚙 once the design is settled and waiting on a
-decision, and ⏳ when that decision comes.
-
-**Never mention a prefix in the response** — not what it was set to, not that it was already right,
-not that it was left alone. It is sidebar state; say nothing about it unless asked.
-
-These are **stages, not flags**: exactly one prefix at a time, and setting a new one replaces
-whatever was there. Set a prefix **optimistically** — when the stage *starts*, not when it succeeds —
-and correct it if the stage falls over. A title that only becomes true at the end is blank for the
-whole stretch the sidebar is there to describe. Only one reads cleanly at sidebar width, and a later
-stage implies the earlier one.
+The rest of the convention — precedence, never mentioning a prefix, one stage at a time —
+is the global session-titles glossary; this section names only the local half.
 
 The lifecycle ✏️ → 🚀 is set by skills where one owns the stage (`update` sets ✏️ before it edits;
 `ship` sets 🚀 before it builds and puts it back if the push fails), so it stays true on its own.
