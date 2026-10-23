@@ -8,6 +8,11 @@ description: Commit and push all changes, update the installed blunt plugin, ext
 Run the whole sequence unattended. Never stop and ask the user to merge, tag, or update by hand.
 
 1. Set the session title prefix to 🚀 (see Session titles in AGENTS.md). Say nothing about it.
+   Read the title with `mcp__ccd_session_mgmt__get_session` (`"self"`) and set it with
+   `mcp__ccd_session_mgmt__set_session_title`. In a cloud session, where those do not exist,
+   `mcp__claude-code-remote__get_session` with no `session_id` describes this session (`ccr.id`,
+   `ccr.title`), and `mcp__claude-code-remote__set_session_title` takes that id. Replace the
+   existing prefix rather than stacking. Skip only when neither tool exists.
 2. `./build.sh`
 3. Bump the minor version in `plugins/blunt/.claude-plugin/plugin.json`.
 4. Commit all changes.
@@ -51,7 +56,8 @@ Skip narration.
 
 ## Archive the session
 
-Last of all, after the report and `🚀 Shipped` are written, archive this session: `mcp__ccd_session_mgmt__archive_session` with `"self"`
+Last of all, after the report and `🚀 Shipped` are written, archive this session: `mcp__ccd_session_mgmt__archive_session` with `"self"`,
+or in a cloud session `mcp__claude-code-remote__archive_session` with this session's `ccr.id`,
 and a reason naming the ship. It is the final tool call of the ship, made in the same response as the report — nothing after the
 archive reaches the user. Asking to ship is the agreement to archive; do not ask again.
 

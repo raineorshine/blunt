@@ -262,8 +262,10 @@ After `/ship`, end on the last bullet — no "Done.", no "Ready to …" line; no
 ## Session titles
 
 The chat sidebar shows a status dot (running / awaiting input / idle) and a branch glyph for
-worktree sessions; neither can be set from here — `set_session_title` takes a title string and
-nothing else. So a **single leading emoji on the title** is the only lever, and it is spent on
+worktree sessions; neither can be set from here — `set_session_title` (the desktop app's
+`mcp__ccd_session_mgmt__set_session_title`, or in a cloud session
+`mcp__claude-code-remote__set_session_title` with the `ccr.id` that
+`mcp__claude-code-remote__get_session` returns) takes a title string and nothing else. So a **single leading emoji on the title** is the only lever, and it is spent on
 what the app cannot know: where the work stands.
 
 | Prefix | Means |
