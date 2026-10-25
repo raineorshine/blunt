@@ -98,59 +98,8 @@ works.
 | `no-check-noise.mjs` | "Report a check only when it failed" | narrates checks that passed |
 | `no-label-leads.mjs` | "The bold lead states the line's content, never labels it" | leads with a bold question |
 
-### no-git-noise
-
-- **The exception is encoded, not judged.** A line may carry `rebase` when it
-  also carries a word saying something is unresolved — failed, refused, still,
-  left behind. Coarse on purpose: the way past the block is to say what is
-  broken, which is the only case the bullet ever allowed.
-- **A 📚 line passes.** A learning written into the docs is about the repo's
-  workflow, not this session's git work; all 20 the sweep refused were that.
-  A cause line naming another session's push ("a ship fast-forwarded main")
-  is still refused — no string separates it from narration.
-
-### no-check-noise
-
-- **Wording alone did not hold it.** The Omit bullet and its delivered-work
-  sub-bullet were both loaded in a v0.48.0 session that still closed on its
-  tested sample count, all of them passing, and a live run that confirmed it.
-  Its terms come from a sweep of real final messages, each annotated with the
-  phrasing it was taken from. At the first cut it refused about 7% of 1,400
-  reports, nearly all rightly; every exception below came from a line that
-  sweep got wrong.
-- **Its exception is narrower than no-git-noise's.** A passing report
-  routinely carries a failure word — red before green, "the old version
-  failed" — so a failure word excuses only its own clause, split at `. ; ! ?`,
-  and a count of nothing (`0 failed`, `no failures`) is not one. A test passing
-  where it should not — on `main`, or blind to a bug it was meant to catch — is
-  a finding too. A line saying what was *not* tested, run or verified passes
-  whole: that caveat is the one check line the user acts on. So does a line
-  naming checks still running, or a bug.
-- **CI status is left out of its terms on purpose.** "Merged after every check
-  passed" answers the request when the user gated the merge on CI, and a
-  string cannot tell that request from noise.
-- **A live run told as a story is a passing check too.** A v0.55.0 report
-  passed a bullet led by **Checked on a private port:** that replayed the bug,
-  ran it with the fix and ran a control without. A `Checked …:` lead now counts
-  as a verification lead when its result follows on the same line — "Checked
-  before acting, and one is still there:" introduces a finding, and "Checked
-  bag:" is luggage — and "with the fix … stayed", "the same run without the
-  fix" and "fix holds" are terms. "Not tried" joins the uncovered caveats.
-
-### no-label-leads
-
-- **Wording alone did not hold it.** A report closed on three question-shaped
-  leads in a row while both bullets naming that shape were loaded.
-- **It refuses a bold span leading a line or list item whose text starts with
-  what, why, where, how, which or who** — the words a sweep of real final
-  messages found opening label leads. "When" is left out: reports open
-  conditions with it.
-- **It has no exception, not even a whole sentence.** A "has a verb" escape
-  would have passed the observed leads, which carry verbs; the way past is a
-  rephrase that puts the answer first. A colon rule was rejected as
-  over-broad, so a label with no question word — one of the three observed
-  leads — still goes through. At the first cut it refused about 5% of 1,400
-  reports.
+Each hook's terms, its exception, and the sweeps they came from are in
+[docs/stop-hook-terms.md](docs/stop-hook-terms.md).
 
 ### Shared machinery
 
@@ -201,7 +150,9 @@ beside the others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep
   transcript as the fallback. The transcript can lag the stop by one message:
   a supernova report passed its own stop, and the next stop was blocked on
   that report's lines while the reply it stopped carried none of them — 10 of
-  312 past blocks quoted an earlier message than the one they stopped.
+  312 past blocks quoted an earlier message than the one they stopped. A
+  throwaway Stop hook under `claude -p --settings` that saves its stdin shows
+  the whole input.
 - **Anything a hook cannot read is not a veto** — no transcript, an
   unparseable line, a turn with no text: exit 0.
 - **Run a Node hook under `env -u NODE_USE_SYSTEM_CA`.** Claude Code sets it for
@@ -218,12 +169,16 @@ beside the others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep
   `~/.claude/projects/*/*.jsonl` (the last assistant text before each typed
   prompt), pipe each through the hook, and read the lines it refuses. Run the
   sweep under `env -u NODE_USE_SYSTEM_CA` too: a Node start per message with
-  the certificates loaded outruns a two-minute command timeout.
+  the certificates loaded outruns a two-minute command timeout — or import the
+  rule and call `offending` on each message, which needs no Node start at all.
+- **Diff the refused lines before and after the edit, both ways.** Lines added
+  are new refusals, each to read; lines removed are refusals the edit lost.
 
 ### Testing a hook
 
-- **Add the line a report carried past it to `test/`,** and run `node
-  --test`.
+- **Add the line a report carried past it to `test/`,** and run a bare `node
+  --test` from the root: `node --test test/` runs the folder as one file and
+  fails.
 - **Test it against a transcript, not by reasoning.** A JSONL file of one
   `{"type":"assistant"}` entry piped in with `{"stop_hook_active":false,
   "transcript_path":...}` is the whole harness; add `last_assistant_message`
