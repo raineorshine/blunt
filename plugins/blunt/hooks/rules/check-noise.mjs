@@ -33,10 +33,22 @@ const PASSED = [
   /\b(tsc|eslint|lint|typecheck|prettier)\b[^.;]*\bclean\b/i, // "`tsc` and eslint clean"
   /\bconfirmed it\b/i, // "One live run confirmed it prompts once"
   /\btested and working\b/i,
+  // A live run told as a story: "With the fix, I forced the same rebuild and the
+  // card stayed open", "The same run without the fix shut it", "the #5842 fix
+  // still holds"
+  /\bwith the fix\b[^.;]*\b(stayed|stays|held|holds)\b/i,
+  /\bsame (run|replay)\b[^.;]*\bwithout the fix\b/i,
+  /\bfix (still )?holds\b/i,
 ]
 
-/** A line that opens on its verification: "- **Tested:** nine sample conversations". */
-const VERIFICATION_LEAD = /^[\s>*-]*(tested|verified|verification)\b[^:]{0,40}:/i
+/**
+ * A line that opens on its verification: "- **Tested:** nine sample conversations",
+ * "- **Checked on a private port:** I replayed that exact ship". "Checked" must
+ * have its result on the same line: "Checked before acting, and one is still
+ * there:" introduces a finding, and a flight's "**Checked bag:**" is luggage.
+ */
+const VERIFICATION_LEAD =
+  /^[\s>*-]*((tested|verified|verification)\b[^:]{0,40}:|checked(?! bags?\b)\b[^:]{0,40}:\**[ \t]+\S)/i
 
 /**
  * A failure in the same clause makes it news — unless it counts nothing — and so
@@ -53,7 +65,7 @@ const NO_FAILURES = /\b(0|zero|no|none|without)\s+(\w+\s+)?fail\w*/gi
  */
 const UNVERIFIED = new RegExp(
   [
-    String.raw`\b(not|never|wasn't|weren't|isn't|aren't|hasn't|haven't|didn't|did not|couldn't|could not|can't|cannot)\s+(\w+\s+)?(tested|verified|run|ran|re-run|measured|checked|exercised|covered)\b`,
+    String.raw`\b(not|never|wasn't|weren't|isn't|aren't|hasn't|haven't|didn't|did not|couldn't|could not|can't|cannot)\s+(\w+\s+)?(tested|tried|verified|run|ran|re-run|measured|checked|exercised|covered)\b`,
     String.raw`\b(untested|unverified)\b`,
     String.raw`\bstill (running|pending|in progress)\b`,
     String.raw`\bwaiting (on|for)\b`,

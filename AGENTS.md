@@ -15,6 +15,7 @@ one file of injected guidelines; everything else is packaging.
 | `plugins/blunt/hooks/rules/` | each `Stop` hook's terms, exception and reason, with no Node imports so the mod can load them |
 | `plugins/blunt/hooks/render/hide-refused-draft.tsx` | mod that draws a reply the `Stop` hooks will refuse as nothing, so only the rewrite shows |
 | `plugins/blunt/hooks/lib/final-report.mjs` | what the `Stop` hooks share: transcript, final report, own-block guard |
+| `test/` | real report lines each rule must refuse or pass; `node --test` |
 | `plugins/blunt/.claude-plugin/plugin.json` | version; gates `claude plugin update` |
 | `build.sh` | syncs `communication.md` into the README |
 | `.github/workflows/tag-release.yml` | tags `v<version>` when a bump lands on `main` |
@@ -103,6 +104,10 @@ works.
   also carries a word saying something is unresolved — failed, refused, still,
   left behind. Coarse on purpose: the way past the block is to say what is
   broken, which is the only case the bullet ever allowed.
+- **A 📚 line passes.** A learning written into the docs is about the repo's
+  workflow, not this session's git work; all 20 the sweep refused were that.
+  A cause line naming another session's push ("a ship fast-forwarded main")
+  is still refused — no string separates it from narration.
 
 ### no-check-noise
 
@@ -124,6 +129,13 @@ works.
 - **CI status is left out of its terms on purpose.** "Merged after every check
   passed" answers the request when the user gated the merge on CI, and a
   string cannot tell that request from noise.
+- **A live run told as a story is a passing check too.** A v0.55.0 report
+  passed a bullet led by **Checked on a private port:** that replayed the bug,
+  ran it with the fix and ran a control without. A `Checked …:` lead now counts
+  as a verification lead when its result follows on the same line — "Checked
+  before acting, and one is still there:" introduces a finding, and "Checked
+  bag:" is luggage — and "with the fix … stayed", "the same run without the
+  fix" and "fix holds" are terms. "Not tried" joins the uncovered caveats.
 
 ### no-label-leads
 
@@ -185,6 +197,11 @@ beside the others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep
   `claude -p --settings <file>` adding a Stop hook that blocks once:
   no-git-noise then blocks under the flag, and an identical rewrite goes
   through.
+- **The message judged is the input's `last_assistant_message`,** with the
+  transcript as the fallback. The transcript can lag the stop by one message:
+  a supernova report passed its own stop, and the next stop was blocked on
+  that report's lines while the reply it stopped carried none of them — 10 of
+  312 past blocks quoted an earlier message than the one they stopped.
 - **Anything a hook cannot read is not a veto** — no transcript, an
   unparseable line, a turn with no text: exit 0.
 - **Run a Node hook under `env -u NODE_USE_SYSTEM_CA`.** Claude Code sets it for
@@ -205,9 +222,12 @@ beside the others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep
 
 ### Testing a hook
 
+- **Add the line a report carried past it to `test/`,** and run `node
+  --test`.
 - **Test it against a transcript, not by reasoning.** A JSONL file of one
   `{"type":"assistant"}` entry piped in with `{"stop_hook_active":false,
-  "transcript_path":...}` is the whole harness.
+  "transcript_path":...}` is the whole harness; add `last_assistant_message`
+  to test the message that is stopping rather than the transcript's last.
 - **Then try it for real** with `claude --plugin-dir plugins/blunt -p … <
   /dev/null`, which fires the hook on its own final message. Asked to state git
   work it never did, the model refuses, so a live run never produces the

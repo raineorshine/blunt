@@ -42,13 +42,19 @@ const MECHANICS = [
 const UNRESOLVED =
   /\b(unresolved|still|left behind|left alone|left in|failed|failing|refus(e|ed|es)|could not|cannot|blocked|abort(ed)?|stuck|needs|waiting on)\b/i
 
+/**
+ * A learning written into the docs is about the repo's workflow, not this
+ * session's: "📚 main's reflog dates every fast-forward that moved the live slot".
+ */
+const LEARNING = /📚/u
+
 export const rule = {
   // First line of the block reason; also how a later stop recognises the block.
   blocked: 'Blocked: the report narrates git mechanics that went as planned.',
   offending: text =>
     text
       .split('\n')
-      .filter(line => !UNRESOLVED.test(line) && MECHANICS.some(re => re.test(line)))
+      .filter(line => !UNRESOLVED.test(line) && !LEARNING.test(line) && MECHANICS.some(re => re.test(line)))
       .map(line => line.trim()),
   rewrite: [
     'Rewrite the final message without them. What landed is the report; how it',

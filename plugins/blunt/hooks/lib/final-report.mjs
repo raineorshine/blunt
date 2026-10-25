@@ -97,7 +97,11 @@ export const checkFinalReport = ({ blocked, offending, rewrite }) => {
   // asked for.
   if (input.stop_hook_active && blockedThisTurn(lines, blocked)) process.exit(0)
 
-  const found = offending(lastAssistantText(lines))
+  // The transcript can lag the stop by one message: a supernova report passed
+  // its own stop, and the next stop was blocked on that report's lines. The
+  // input's last_assistant_message is the message that is stopping.
+  const text = typeof input.last_assistant_message === 'string' ? input.last_assistant_message : lastAssistantText(lines)
+  const found = offending(text)
   if (found.length === 0) process.exit(0)
 
   console.error([blocked, '', ...found.map(l => `  ${l}`), '', ...rewrite, ...remoteRewrite()].join('\n'))
