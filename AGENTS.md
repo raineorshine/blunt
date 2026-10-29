@@ -1,14 +1,19 @@
 # AGENTS.md
 
-Claude Code plugins for blunt, low-noise agent behavior. The whole product is
-one file of injected guidelines; everything else is packaging.
+Claude Code plugins for blunt, low-noise agent behavior.
+
+**The guidelines are not injected for now.** `hooks.json` has no
+`SessionStart` hook and no `no-label-leads` entry, and `rules/index.mjs` leaves
+label-leads out: newer models write naturally on their own, so the plugin is down
+to the two noise hooks while that is tried. The files stay; restoring those three
+entries brings the guidelines and the bold-lead hook back.
 
 ## Layout
 
 | path | what |
 |---|---|
 | `plugins/blunt/context/communication.md` | the guidelines — the actual product |
-| `plugins/blunt/hooks/hooks.json` | `SessionStart` hook that cats them into context, and the `Stop` hooks below |
+| `plugins/blunt/hooks/hooks.json` | the `Stop` hooks below; a `SessionStart` hook that cats the guidelines into context when they are injected |
 | `plugins/blunt/hooks/Stop/no-git-noise.mjs` | `Stop` hook that refuses a report narrating git mechanics |
 | `plugins/blunt/hooks/Stop/no-check-noise.mjs` | `Stop` hook that refuses a report narrating checks that passed |
 | `plugins/blunt/hooks/Stop/no-label-leads.mjs` | `Stop` hook that refuses a bold lead posing a question |

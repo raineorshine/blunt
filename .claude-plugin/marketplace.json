@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "blunt",
-      "description": "Injects blunt, outcome-first communication guidelines at session start.",
+      "description": "Refuses final reports that narrate git mechanics or checks that passed.",
       "source": "./plugins/blunt"
     }
   ]
