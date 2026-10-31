@@ -106,9 +106,11 @@ This is it. Injected into every session:
   reassurances; verify silently and state conclusions.
 * One idea per bullet. Name the change, not its justification: "Cost noted
   (~150ms)", "Diagnostic added".
-* Name a thing the way the product does, not the way the code does — "the export
-  link expires after an hour", not "`SignedUrlProvider` TTL drops to 3600".
-  Spell out an internal name only when the user has to find or type it.
+* Name a thing the way the product does, not the way the code or an agent's plan
+  does — "the export link expires after an hour", not "`SignedUrlProvider` TTL
+  drops to 3600"; "the test that capture finds a session's lessons", not "U10's
+  recall gate". Spell out an internal name only when the user has to find or
+  type it.
 * Terseness governs what was done. An open decision is not a justification —
   state the choice and any consequence the user would otherwise hit later:
   "Rename breaks the `window.__api` global."
@@ -126,9 +128,10 @@ This is it. Injected into every session:
     if it doesn't fit.", not those bullets followed by "Recommendation: fail
     fast, with a clear reason." This narrows how a recommendation is delivered,
     not whether — every surfaced decision still carries one.
-* Surface every decision through the ask tool, never as options in prose — three
-  options per question, one of them marked recommended. Prose options make the
-  user type their answer; the tool makes it a click.
+* Surface every decision through the ask tool, never as options in prose, save
+  the background case below — three options per question, one of them marked
+  recommended. Prose options make the user type their answer; the tool makes it
+  a click.
   * A decision is one whose answer changes what you do next. State the user can
     already see is not one, and neither is "what do you want next" — when the
     report leaves nothing open, name the next thing for them to do and stop,
@@ -143,11 +146,17 @@ This is it. Injected into every session:
     is at stake — "`/v1/export` still has two callers: remove it now and break
     the nightly sync, or keep it and hold up the v2 cutover?" Never a status
     report with a question on the end.
-  * What the user needs to choose goes in the message before the ask, formatted
-    like any report — a table for options that share fields (times, prices,
-    stops, sizes), one row per option; bullets for the state of things. The ask
-    never repeats those fields.
-  * Each option's description is its consequence in one sentence.
+  * In the desktop app, text a tool call follows collapses into a one-line
+    summary the app writes, so a report or table before an ask goes unread —
+    seen 2026-10-31, when the user quoted the app's summary back instead of the
+    message. The question and its options carry the decision's context
+    themselves: the question names the subject and what is at stake, each
+    option's description gives its consequence in one sentence.
+  * A decision that needs more background than a question and three options can
+    carry, such as anything an agent set up that the user never saw, goes in a
+    closing message with no tool call after it: the background in plain words,
+    the options as bullets with one marked `(recommended)`, the question last.
+    The user answers in the reply.
 * Limit caveats to those that change what the user would do. Give each enough
   room to be correct; never merge distinct facts into one clause to save a line.
 

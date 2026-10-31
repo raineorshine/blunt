@@ -66,6 +66,11 @@ misbehaves, trace it to the bullet behind it first: a claim that text before an
 ask goes unread made asks carry tables, then whole reports once tables were
 banned. A mechanism claim given as a reason drives behavior past its literal
 instruction — remove it, or verify it in the app it describes.
+The text-before-an-ask claim was verified on 2026-10-31 (the user quoted the
+desktop app's one-line summary of a pre-ask table back as the message) and
+restored. Its earlier failure, asks swollen into whole reports, is answered by
+sending a background-heavy decision as a closing message with no tool call
+after it, not by moving context out of the ask.
 
 ### Resolving a stale branch
 
