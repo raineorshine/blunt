@@ -12,6 +12,7 @@ one file of injected guidelines; everything else is packaging.
 | `plugins/blunt/hooks/Stop/no-git-noise.mjs` | `Stop` hook that refuses a report narrating git mechanics |
 | `plugins/blunt/hooks/Stop/no-check-noise.mjs` | `Stop` hook that refuses a report narrating checks that passed |
 | `plugins/blunt/hooks/Stop/no-label-leads.mjs` | `Stop` hook that refuses a bold lead posing a question |
+| `plugins/blunt/hooks/Stop/no-prose-asks.mjs` | `Stop` hook that refuses a decision asked in prose instead of the ask tool |
 | `plugins/blunt/hooks/rules/` | each `Stop` hook's terms, exception and reason, with no Node imports so the mod can load them |
 | `plugins/blunt/hooks/render/hide-refused-draft.tsx` | mod that draws a reply the `Stop` hooks will refuse as nothing, so only the rewrite shows |
 | `plugins/blunt/hooks/lib/final-report.mjs` | what the `Stop` hooks share: transcript, final report, own-block guard |
@@ -69,8 +70,10 @@ instruction — remove it, or verify it in the app it describes.
 The text-before-an-ask claim was verified on 2026-10-31 (the user quoted the
 desktop app's one-line summary of a pre-ask table back as the message) and
 restored. Its earlier failure, asks swollen into whole reports, is answered by
-sending a background-heavy decision as a closing message with no tool call
-after it, not by moving context out of the ask.
+a short report before the ask whose key facts the question repeats, not by
+moving context out of the ask. A background-heavy decision once went out as a
+closing message of prose options instead, with the user to type the answer; the
+user wanted no exception to the ask tool, and `no-prose-asks` now refuses one.
 
 ### Resolving a stale branch
 
@@ -88,7 +91,7 @@ A session that sat while `main` moved on conflicts in `communication.md`,
 
 ## Stop hooks
 
-Everything in `communication.md` is prose a model weighs. Three bullets are also
+Everything in `communication.md` is prose a model weighs. Four bullets are also
 enforced: a `Stop` hook reads the last assistant message when the session stops,
 and exits 2 — which returns the reason as feedback and gets the message
 rewritten — when a line breaks the bullet. Injected wording did not hold the
@@ -102,6 +105,7 @@ works.
 | `no-git-noise.mjs` | "Handle fetch, rebase, pull and merge silently" | names git mechanics that went as planned |
 | `no-check-noise.mjs` | "Report a check only when it failed" | narrates checks that passed |
 | `no-label-leads.mjs` | "The bold lead states the line's content, never labels it" | leads with a bold question |
+| `no-prose-asks.mjs` | "Surface every decision through the ask tool" | ends the message on a question offering a choice |
 
 Each hook's terms, its exception, and the sweeps they came from are in
 [docs/stop-hook-terms.md](docs/stop-hook-terms.md).

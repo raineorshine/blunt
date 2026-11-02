@@ -4,5 +4,6 @@
 import { rule as checkNoise } from './check-noise.mjs'
 import { rule as gitNoise } from './git-noise.mjs'
 import { rule as labelLeads } from './label-leads.mjs'
+import { rule as proseAsks } from './prose-asks.mjs'
 
-export const RULES = [gitNoise, checkNoise, labelLeads]
+export const RULES = [gitNoise, checkNoise, labelLeads, proseAsks]

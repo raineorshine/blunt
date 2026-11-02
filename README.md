@@ -128,10 +128,9 @@ This is it. Injected into every session:
     if it doesn't fit.", not those bullets followed by "Recommendation: fail
     fast, with a clear reason." This narrows how a recommendation is delivered,
     not whether — every surfaced decision still carries one.
-* Surface every decision through the ask tool, never as options in prose, save
-  the background case below — three options per question, one of them marked
-  recommended. Prose options make the user type their answer; the tool makes it
-  a click.
+* Surface every decision through the ask tool, never as options in prose or a
+  closing question — three options per question, one of them marked recommended.
+  Prose options make the user type their answer; the tool makes it a click.
   * A decision is one whose answer changes what you do next. State the user can
     already see is not one, and neither is "what do you want next" — when the
     report leaves nothing open, name the next thing for them to do and stop,
@@ -152,11 +151,11 @@ This is it. Injected into every session:
     message. The question and its options carry the decision's context
     themselves: the question names the subject and what is at stake, each
     option's description gives its consequence in one sentence.
-  * A decision that needs more background than a question and three options can
-    carry, such as anything an agent set up that the user never saw, goes in a
-    closing message with no tool call after it: the background in plain words,
-    the options as bullets with one marked `(recommended)`, the question last.
-    The user answers in the reply.
+  * A decision that needs background, such as anything an agent set up that the
+    user never saw, still goes through the ask tool. Put the background in the
+    question and in each option's description, or write a short report before
+    the call and repeat its key facts in the question — the report collapses,
+    the question does not.
 * Limit caveats to those that change what the user would do. Give each enough
   room to be correct; never merge distinct facts into one clause to save a line.
 

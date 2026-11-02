@@ -57,3 +57,19 @@ them, is in [AGENTS.md](../AGENTS.md#stop-hooks).
   over-broad, so a label with no question word — one of the three observed
   leads — still goes through. At the first cut it refused about 5% of 1,400
   reports.
+
+#### no-prose-asks
+
+- **It replaced an exception, not a wording.** The ask-tool bullet let a
+  decision needing more background go in a closing message of prose options;
+  a supernova session took it for a three-way build choice, and the user wanted
+  no exception. The bullet now says how to fit background into the ask.
+- **Only the ending counts.** The last prose line must be a question, with
+  nothing after it but list items, so options listed under the question are
+  caught too. Fences, quoted lines and inline code are skipped.
+- **A question alone is not a decision.** It must also offer a choice: a list
+  item marked `(recommended)`, a "which … should / do you / would you"
+  question, or a "should I / want me to / would you prefer … or …" question. A
+  clarifying question and a one-option offer pass.
+- **At the first cut it refused about 1.3% of 12,300 reports,** nearly all
+  "Want me to X, or Y?" endings — choices the user would rather click.
