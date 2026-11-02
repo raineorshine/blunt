@@ -119,6 +119,8 @@ listed in `rules/index.mjs`. Everything else lives in `hooks/lib/final-report.mj
 a new hook is a stub calling `checkFinalReport(rule)`, with its own entry
 beside the others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep
 `blocked` distinct from every other hook's: the guard below finds it by substring.
+A new hook also gets a test file, a row in each table above and a section in
+`docs/stop-hook-terms.md`.
 
 - **Separate hooks, one reason each.** The reason is what the model rewrites
   against, and one reason naming two concerns tells it less about either.
@@ -192,6 +194,9 @@ beside the others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep
   `{"type":"assistant"}` entry piped in with `{"stop_hook_active":false,
   "transcript_path":...}` is the whole harness; add `last_assistant_message`
   to test the message that is stopping rather than the transcript's last.
+  Write the JSONL with `printf '%s\n' '…'`, never `echo`: zsh's `echo` turns
+  the JSON's `\n` into real newlines, the line stops parsing, and the hook
+  exits 0 as if the message passed.
 - **Then try it for real** with `claude --plugin-dir plugins/blunt -p … <
   /dev/null`, which fires the hook on its own final message. Asked to state git
   work it never did, the model refuses, so a live run never produces the
@@ -201,6 +206,8 @@ beside the others in `hooks.json`'s `Stop` hooks, prefixed like them. Keep
   `~/.claude/projects/*/<session_id>.jsonl` shows each `stop_hook_summary` and
   its `hookErrors`, which is the evidence the block happened and the guard
   released the repeat.
+  A supernova session refuses this run — its `PreToolUse` hook allows a new
+  agent session only as a supernova card — so from there, skip it and say so.
 - **Test the guard with four transcripts, whatever the hook.** Under
   `stop_hook_active:true`: its own reason in a `stop_hook_summary` after the
   last typed prompt passes; another hook's reason there, its own reason before
