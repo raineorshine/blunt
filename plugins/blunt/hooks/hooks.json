@@ -10,6 +10,17 @@
         ]
       }
     ],
+    "PostToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "env -u NODE_USE_SYSTEM_CA node \"${CLAUDE_PLUGIN_ROOT}/hooks/PostToolUse/answer-questions-in-asks.mjs\""
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [

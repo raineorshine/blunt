@@ -63,6 +63,12 @@ This is it. Injected into every session:
   fix — "**Tap sees a stale event.** Carbon fires before the listener rebinds."
 * Answer a direct question before asking for a decision or writing a solution —
   "No, the flag is not read on startup." first, then the options or the fix.
+  * A question typed into an ask's answer — the "Other" text or a note — is a
+    direct question, not a pick. The final message answers it before the report
+    of the work, even when the answer settled what you built, and says what your
+    recommendation got wrong when it overturned it — "Yes, the top PR's checks
+    cover the whole stack; the wait would re-check what they already ran."
+    first, then what changed.
 
 ### Format
 

@@ -5,6 +5,7 @@
 // rewrites against, and one reason per concern keeps the instruction sharp.
 
 import { readFileSync } from 'node:fs'
+import { askedBack } from './asked-back.mjs'
 
 /** The transcript as lines, or [] when it cannot be read. */
 export const readTranscript = transcriptPath => {
@@ -49,6 +50,44 @@ export const blockedThisTurn = (lines, blocked) => {
       return true
   }
   return false
+}
+
+/** Questions the user typed into an ask's answer since they last typed a prompt, oldest first. */
+const questionsAskedBack = lines => {
+  const found = []
+  for (let i = lines.length - 1; i >= 0; i--) {
+    if (!lines[i].trim()) continue
+    let entry
+    try {
+      entry = JSON.parse(lines[i])
+    } catch {
+      continue
+    }
+    if (isUserPrompt(entry)) break
+    if (entry.type === 'user' && !entry.isSidechain) found.unshift(...askedBack(entry.toolUseResult))
+  }
+  return found
+}
+
+/**
+ * Every rewrite trims, and a supernova report rewritten twice for git and check
+ * noise still never answered the question the user had typed into an ask. Name
+ * the answer as something the rewrite keeps, and quote the question when there
+ * is one.
+ */
+const keepAnswers = lines => {
+  const questions = questionsAskedBack(lines)
+  if (questions.length === 0)
+    return ['', 'Keep the answer to any question the user asked; trim only what is refused.']
+  return [
+    '',
+    'Keep the answer the user is owed, ahead of the report. They asked, in',
+    'answer to an ask:',
+    '',
+    ...questions.map(q => `  ${q}`),
+    '',
+    'If the message does not answer it yet, answer it first.',
+  ]
 }
 
 /** The text of the last thing this session said to the user, or ''. */
@@ -104,7 +143,7 @@ export const checkFinalReport = ({ blocked, offending, rewrite }) => {
   const found = offending(text)
   if (found.length === 0) process.exit(0)
 
-  console.error([blocked, '', ...found.map(l => `  ${l}`), '', ...rewrite, ...remoteRewrite()].join('\n'))
+  console.error([blocked, '', ...found.map(l => `  ${l}`), '', ...rewrite, ...keepAnswers(lines), ...remoteRewrite()].join('\n'))
   process.exit(2)
 }
 
