@@ -58,7 +58,8 @@ Skip narration.
 
 Last of all, after the report and `🚀 Shipped` are written, archive this session: `mcp__ccd_session_mgmt__archive_session` with `"self"`,
 or in a cloud session `mcp__claude-code-remote__archive_session` with this session's `ccr.id`,
-and a reason naming the ship. It is the final tool call of the ship, made in the same response as the report — nothing after the
+and a reason naming the ship. A supernova agent chat has neither: call `mcp__supernova__clear_card`
+instead, which archives the chat when the turn ends. It is the final tool call of the ship, made in the same response as the report — nothing after the
 archive reaches the user. Asking to ship is the agreement to archive; do not ask again.
 
 Skip it when `learn` or `learn-organize` invoked this ship: the session goes on after that ship. A
