@@ -159,13 +159,8 @@ A new hook also gets a test file, a row in each table above and a section in
   `claude -p --settings <file>` adding a Stop hook that blocks once:
   no-git-noise then blocks under the flag, and an identical rewrite goes
   through.
-- **The message judged is the input's `last_assistant_message`,** with the
-  transcript as the fallback. The transcript can lag the stop by one message:
-  a supernova report passed its own stop, and the next stop was blocked on
-  that report's lines while the reply it stopped carried none of them — 10 of
-  312 past blocks quoted an earlier message than the one they stopped. A
-  throwaway Stop hook under `claude -p --settings` that saves its stdin shows
-  the whole input.
+- **The message judged is the input's `last_assistant_message`;** the
+  transcript, its fallback, lagged the stop in 10 of 312 past blocks.
 - **Anything a hook cannot read is not a veto** — no transcript, an
   unparseable line, a turn with no text: exit 0.
 - **Run a Node hook under `env -u NODE_USE_SYSTEM_CA`.** Claude Code sets it for
@@ -180,7 +175,9 @@ A new hook also gets a test file, a row in each table above and a section in
   written is a false positive waiting to happen.
 - **Sweep the transcripts first.** Pull every final message from
   `~/.claude/projects/*/*.jsonl` (the last assistant text before each typed
-  prompt), pipe each through the hook, and read the lines it refuses. Run the
+  prompt) — list them with `find ~/.claude/projects -name '*.jsonl' | xargs`,
+  since the shell glob over them has come back empty with the files there —
+  pipe each through the hook, and read the lines it refuses. Run the
   sweep under `env -u NODE_USE_SYSTEM_CA` too: a Node start per message with
   the certificates loaded outruns a two-minute command timeout — or import the
   rule and call `offending` on each message, which needs no Node start at all.
@@ -199,6 +196,8 @@ A new hook also gets a test file, a row in each table above and a section in
   Write the JSONL with `printf '%s\n' '…'`, never `echo`: zsh's `echo` turns
   the JSON's `\n` into real newlines, the line stops parsing, and the hook
   exits 0 as if the message passed.
+- **Build the fixture from the incident's own entry:** find its session file by
+  a phrase the user quoted, take the line with `sed -n <N>p`.
 - **Then try it for real** with `claude --plugin-dir plugins/blunt -p … <
   /dev/null`, which fires the hook on its own final message. Asked to state git
   work it never did, the model refuses, so a live run never produces the
@@ -222,28 +221,9 @@ A new hook also gets a test file, a row in each table above and a section in
 
 ## Questions typed into an ask
 
-A user who answers an ask with a question instead of a pick is owed an answer,
-and a supernova session read "Why would we need to wait for all the lower
-checks?" as a decision, built the opposite of its recommendation, and never
-answered — two Stop rewrites later, still nothing. 121 of 1,985 asks in a sweep
-came back with a question; one of them was the user complaining that another
-session had done the same.
-
-- **No Stop hook refuses it.** Finding the question is a string match on the
-  tool result's `answers` and `annotations`; whether a reply answers it is not.
-  A hook that blocks once to make the agent look would cost a round on every
-  such turn, and the mod cannot hide a draft it has no text rule for, so an
-  answered reply would show twice.
-- **`answer-questions-in-asks.mjs` names it where the misread happens.** A
-  `PostToolUse` hook on `AskUserQuestion` reads `tool_response` — the same
-  `{ questions, answers, annotations }` the transcript stores as
-  `toolUseResult` — and adds the questions as `additionalContext` beside the
-  answer, with the instruction to answer them first in the final message.
-- **Every Stop rewrite keeps the answer.** `lib/final-report.mjs` appends one
-  line to every block's reason telling the rewrite to keep answers it owes, and
-  quotes the questions asked back since the last typed prompt when there are any.
-- **A quoted line in an answer is the agent's own words.** `> …` lines are
-  skipped, so a user quoting the ask's text back is not read as asking it.
+A question typed into an ask's answer is flagged by a `PostToolUse` hook, never
+refused by a Stop hook: whether a reply answers it is not a string match. See
+[docs/questions-in-asks.md](docs/questions-in-asks.md).
 
 ## Evaluating a change
 
