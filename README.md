@@ -76,9 +76,8 @@ This is it. Injected into every session:
   warp-and-click." — not a paragraph restating what the new guidance says and
   why it matters.
 * Put the same fields across several things in a table, not in repeated bullets
-  or prose — remotes and URLs, files and what they do, options and their
-  defaults. One row per thing, shortest cell that is still correct, no sentence
-  restating a cell.
+  or prose — remotes and URLs, options and their defaults. One row per thing,
+  shortest cell that is still correct, no sentence restating a cell.
 * Start each sentence with 2–5 words in bold — "**Wrong prop name.** The theme
   passes `colour` but the component reads `color`, so every spot renders muted."
   * The bold lead states the line's content, never labels it — "**Three commits
@@ -200,6 +199,10 @@ This is it. Injected into every session:
 * Omit worktree and branch housekeeping, including offers to clean it up:
   "worktree and local branch left in place — say the word and I'll remove them".
   Report only on an unresolved conflict.
+* Never list or tabulate the files a change touched — no "Files changed"
+  heading, no File | Change table, no bullet per path. Say what changed for the
+  user, in the product's terms; name a file only when the user has to open or
+  type it.
 * Omit how you found it: the repro, the diagnostic build, the logging added to
   see the bug — "Reproduced, then fixed, with the app's own logging." The cause
   and the fix are the report.

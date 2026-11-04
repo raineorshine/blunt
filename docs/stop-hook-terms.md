@@ -84,3 +84,23 @@ them, is in [AGENTS.md](../AGENTS.md#stop-hooks).
   offer of work nobody asked for instead of asking it.
 - **The standing offers added 14 refusals across 2,566 reports,** every one an
   offer.
+
+#### no-file-lists
+
+- **It was added with its bullet, not after it failed.** No bullet forbade a
+  file list, and the table bullet named "files and what they do" as an example
+  of a table; a supernova report closed on a **Files changed:** heading over a
+  File | Change table. The example is gone, and the hook refuses the shape.
+- **Three shapes are refused:** a heading, bold lead or short colon line
+  naming a file list ("Files changed", "Changed files", "Changes by file"); a
+  table header with a File or Path column; and three or more list items or
+  table rows in a run, each led by a file path — bare, in backticks, bold, or
+  a markdown link.
+- **A path is a file name with an extension.** A folder (`~/projects`) or a
+  branch name (`em/beautiful-bartik`) is not one, and a path with a line
+  number (`undo.ts:1039`) points at code under review, so it passes.
+- **The exception is the path the user opens or types,** which comes one at a
+  time: a single path-led item, or a path mid-sentence, passes.
+- **At the first cut it refused 19 of 1,855 reports,** each a list of files —
+  changed, reworded, or proposed in a docs reorganisation. Subagent transcripts
+  were left out of the sweep: a Stop hook never sees them.

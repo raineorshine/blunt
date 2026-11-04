@@ -13,6 +13,7 @@ one file of injected guidelines; everything else is packaging.
 | `plugins/blunt/hooks/Stop/no-check-noise.mjs` | `Stop` hook that refuses a report narrating checks that passed |
 | `plugins/blunt/hooks/Stop/no-label-leads.mjs` | `Stop` hook that refuses a bold lead posing a question |
 | `plugins/blunt/hooks/Stop/no-prose-asks.mjs` | `Stop` hook that refuses a decision asked in prose instead of the ask tool |
+| `plugins/blunt/hooks/Stop/no-file-lists.mjs` | `Stop` hook that refuses a list of the files a change touched |
 | `plugins/blunt/hooks/PostToolUse/answer-questions-in-asks.mjs` | `PostToolUse` hook that flags a question typed into an ask's answer as one to answer |
 | `plugins/blunt/hooks/lib/asked-back.mjs` | finds those questions in an ask's result, for that hook and the `Stop` rewrites |
 | `plugins/blunt/hooks/rules/` | each `Stop` hook's terms, exception and reason, with no Node imports so the mod can load them |
@@ -93,7 +94,7 @@ A session that sat while `main` moved on conflicts in `communication.md`,
 
 ## Stop hooks
 
-Everything in `communication.md` is prose a model weighs. Four bullets are also
+Everything in `communication.md` is prose a model weighs. Five bullets are also
 enforced: a `Stop` hook reads the last assistant message when the session stops,
 and exits 2 — which returns the reason as feedback and gets the message
 rewritten — when a line breaks the bullet. Injected wording did not hold the
@@ -108,6 +109,7 @@ works.
 | `no-check-noise.mjs` | "Report a check only when it failed" | narrates checks that passed |
 | `no-label-leads.mjs` | "The bold lead states the line's content, never labels it" | leads with a bold question |
 | `no-prose-asks.mjs` | "Surface every decision through the ask tool" | ends the message on a question offering a choice, or a standing offer ("whenever you say") |
+| `no-file-lists.mjs` | "Never list or tabulate the files a change touched" | labels a file list, heads a File or Path column, or is one of three items in a row led by a file path |
 
 Each hook's terms, its exception, and the sweeps they came from are in
 [docs/stop-hook-terms.md](docs/stop-hook-terms.md).

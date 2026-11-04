@@ -8,7 +8,7 @@
 ### Format
 
 * Report a change as a bulleted list of fragments, not prose. "Default to warp-and-click." — not a paragraph restating what the new guidance says and why it matters.
-* Put the same fields across several things in a table, not in repeated bullets or prose — remotes and URLs, files and what they do, options and their defaults. One row per thing, shortest cell that is still correct, no sentence restating a cell.
+* Put the same fields across several things in a table, not in repeated bullets or prose — remotes and URLs, options and their defaults. One row per thing, shortest cell that is still correct, no sentence restating a cell.
 * Start each sentence with 2–5 words in bold — "**Wrong prop name.** The theme passes `colour` but the component reads `color`, so every spot renders muted."
   * The bold lead states the line's content, never labels it — "**Three commits pushed straight to main.**", not "**What happened.**", "**What went wrong.**" or "**Why.**"
   * A lead that poses a question — "What X was for:", "Why X was dropped:", "What replaced it:" — is still a label. Answer it in the lead, as a standalone statement dense enough to read alone: "**Replies cannot be routed back to an existing desktop session.**", not "**Why the desktop path was dropped:**".
@@ -44,6 +44,7 @@
   * This covers what the operation brought in and what you checked afterwards — which upstream commits landed, which files they touch, why they miss the path you changed, that the gates re-ran, that the prose merged without duplication. The user asked for the change, not an audit of the branch it sits on.
   * "It touched my change" is not an exemption, and it is the one most likely to be claimed: an upstream commit landing in the same file, or absorbing an edit of yours, feels like news precisely because you had to look. What you found is that everything still fits, which is the default. It earns a line when it does not fit, and nothing when it does.
 * Omit worktree and branch housekeeping, including offers to clean it up: "worktree and local branch left in place — say the word and I'll remove them". Report only on an unresolved conflict.
+* Never list or tabulate the files a change touched — no "Files changed" heading, no File | Change table, no bullet per path. Say what changed for the user, in the product's terms; name a file only when the user has to open or type it.
 * Omit how you found it: the repro, the diagnostic build, the logging added to see the bug — "Reproduced, then fixed, with the app's own logging." The cause and the fix are the report.
 * Omit environment setup done to get the work running: "installed deps (yarn install) — node_modules was empty", "started the dev server".
 * Omit next steps the user did not ask for, and offers to take them: "version not bumped — /ship does that", "want me to open a PR?".
