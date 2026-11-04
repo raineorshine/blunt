@@ -140,7 +140,9 @@ This is it. Injected into every session:
   * A decision is one whose answer changes what you do next. State the user can
     already see is not one, and neither is "what do you want next" — when the
     report leaves nothing open, name the next thing for them to do and stop,
-    rather than making options out of whatever is to hand.
+    rather than making options out of whatever is to hand. A go-ahead on the
+    next step of work the user asked for is a decision, though — ask it, never
+    "I can start step 4 whenever you say."
   * Name the subject in a question and its lead-in, rather than pointing at it
     with "it", "this", "that" or "the change" — a pronoun sends the user back
     through the message hunting for the referent. "The header change is running

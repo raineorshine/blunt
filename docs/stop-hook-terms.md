@@ -73,3 +73,14 @@ them, is in [AGENTS.md](../AGENTS.md#stop-hooks).
   clarifying question and a one-option offer pass.
 - **At the first cut it refused about 1.3% of 12,300 reports,** nearly all
   "Want me to X, or Y?" endings — choices the user would rather click.
+- **A standing offer is a decision too.** A last prose line handing the
+  go-ahead back — "say the word", "just say which|when", "ready when you are",
+  "whenever you say|are|'re ready", "when you're ready … I'll" — is refused
+  whether or not it is a question. A supernova session ended a handoff on "I can
+  start step 4 whenever you say." with step 4 needing two apps quit first. Only
+  the last line counts. "Just say so" is an instruction, not an offer, and
+  "whenever you like" was only seen telling the user to do something. "Let me
+  know when" never ended a report, so it is not a term. The rewrite drops an
+  offer of work nobody asked for instead of asking it.
+- **The standing offers added 14 refusals across 2,566 reports,** every one an
+  offer.

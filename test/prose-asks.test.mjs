@@ -32,6 +32,26 @@ const refused = [
     'Want me to open an issue for those, or start on the merge?',
   ],
   ['Which publishing route do you want?', 'Which publishing route do you want?'],
+  // A standing offer on the rest of a handoff (supernova, v0.59.0)
+  [
+    [
+      'Still to do from the handoff:',
+      '- Step 4, move in from the Mac. It needs Supernova.app and the Claude desktop app quit first.',
+      '- Step 5, the iPhone app. It needs Xcode and an Apple Developer team.',
+      '',
+      'I can start step 4 whenever you say.',
+    ].join('\n'),
+    'I can start step 4 whenever you say.',
+  ],
+  // Standing offers from past final messages
+  ['Ready when you are — I\'ll read the log once the window closes.', 'Ready when you are — I\'ll read the log once the window closes.'],
+  ['Ready to start implementing whenever you are.', 'Ready to start implementing whenever you are.'],
+  ['Still happy to run the monitor across the 30 PRs — just say which.', 'Still happy to run the monitor across the 30 PRs — just say which.'],
+  [
+    'Not committed — say the word and I\'ll commit the ministore fix.',
+    'Not committed — say the word and I\'ll commit the ministore fix.',
+  ],
+  ["When you're ready, I'll start the recording.", "When you're ready, I'll start the recording."],
 ]
 
 const passed = [
@@ -46,6 +66,14 @@ const passed = [
   'The rule now refuses `Which one should I build?` endings.',
   // Recommended bullets with no question after them
   ['- Fail fast (recommended) — refuse if it does not fit.', '- Truncate.'].join('\n'),
+  // A standing-offer phrase that is not the ending
+  ['Step 4 started when you said the word; just say so to stop it.', 'Step 4 moved your chats to the box.'].join('\n'),
+  // A plain report, and an instruction to the user
+  ['- Step 4 done: chats moved to the box.', '- Step 5 needs Xcode and an Apple Developer team.'].join('\n'),
+  "Next time it breaks, just say so, ideally with the rough time.",
+  'This session has no archive tool, so archive it from the sidebar whenever you like.',
+  // The phrase quoted in inline code
+  'The rule now refuses endings like `I can start step 4 whenever you say.`',
 ]
 
 test('refuses a decision asked in prose', () => {

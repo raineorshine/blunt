@@ -16,6 +16,16 @@
 // between alternatives joined by "or". An offer with one option ("Want me to
 // open a PR?") is not a choice, and is another bullet's business.
 //
+// A standing offer is the other shape: the last prose line hands the go-ahead
+// back — "I can start step 4 whenever you say." A supernova session ended a
+// handoff that way, steps 1–3 done and step 4 needing two apps quit first;
+// whether and when to start it was the user's call, and the tool makes it a
+// click. It need not be a question, so it is matched by its phrase, and only on
+// the last prose line, so a report that uses the words mid-message passes. The
+// phrases are the ones a sweep of past final messages found ending one; "say
+// the word if you want that posted" is an offer of work nobody asked for, which
+// the rewrite says to drop rather than ask.
+//
 // Code fences, quoted lines and inline code are skipped, so a report quoting
 // the rule or a test fixture is not taken for an ask.
 
@@ -29,6 +39,15 @@ const RECOMMENDED = /\(recommended\)/i
 const CHOICE = [
   /\bwhich\b[^?]*\b(should|shall|do you|would you|want|prefer|go with|pick)\b/i,
   /\b(should I|shall I|do you want|would you (like|prefer)|want me to|prefer)\b[^?]*\bor\b/i,
+]
+
+/** A last line that hands the go-ahead back to the user. */
+const STANDING_OFFER = [
+  /\bsay the word\b/i,
+  /\bjust say (?:which|when)\b/i,
+  /\bready when you are\b/i,
+  /\bwhenever you(?:'re| are)?\s+(?:say|are|ready)\b/i,
+  /\b(?:when|once) you(?:'re| are) ready\b[^.]*\bI(?:'ll| will| can)\b/i,
 ]
 
 /** The message's lines a reader sees as prose: no fences, quotes or inline code. */
@@ -49,6 +68,8 @@ const proseLines = text => {
 
 const offending = text => {
   const lines = proseLines(text)
+  const last = lines.at(-1)
+  if (last && STANDING_OFFER.some(re => re.test(last.bare))) return [last.line]
   let i = lines.length - 1
   while (i >= 0 && ITEM.test(lines[i].bare)) i--
   if (i < 0) return []
@@ -71,6 +92,10 @@ export const rule = {
     'report before the call and repeat its key facts in the question — text',
     'before a tool call collapses in the desktop app. Drop the prose options',
     'and the closing question from the message.',
+    'A standing offer ("whenever you say", "say the word") on work the user',
+    'asked for is a go-ahead to ask the same way: start now (saying what it',
+    'disrupts), later, or something else. An offer of work nobody asked for',
+    'is dropped, not asked.',
     'Change nothing in the repository: this is the message, not the work.',
   ],
 }

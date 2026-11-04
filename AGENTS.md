@@ -107,7 +107,7 @@ works.
 | `no-git-noise.mjs` | "Handle fetch, rebase, pull and merge silently" | names git mechanics that went as planned |
 | `no-check-noise.mjs` | "Report a check only when it failed" | narrates checks that passed |
 | `no-label-leads.mjs` | "The bold lead states the line's content, never labels it" | leads with a bold question |
-| `no-prose-asks.mjs` | "Surface every decision through the ask tool" | ends the message on a question offering a choice |
+| `no-prose-asks.mjs` | "Surface every decision through the ask tool" | ends the message on a question offering a choice, or a standing offer ("whenever you say") |
 
 Each hook's terms, its exception, and the sweeps they came from are in
 [docs/stop-hook-terms.md](docs/stop-hook-terms.md).
