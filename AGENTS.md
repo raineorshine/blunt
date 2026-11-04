@@ -130,7 +130,9 @@ A new hook also gets a test file, a row in each table above and a section in
   reasons arrive together, so a report with two kinds of noise is blocked once
   and rewritten once — checked live, one `stop_hook_summary` carried both
   reasons and the next stop carried neither. A third showing happens only when
-  a rewrite adds the other kind, which the reasons tell it not to do.
+  a rewrite adds the other kind, which the reasons tell it not to do. A new
+  shape of a bullet a hook already guards extends that hook's rule instead:
+  standing offers ("whenever you say") joined no-prose-asks, the same bullet.
 - **A refused report is hidden, not shown twice.** Stop fires after the
   message is on screen, so `render/hide-refused-draft.tsx`, a mod (a
   `ui.render` hook named under `modules` in `hooks.json`), draws a reply that
@@ -138,10 +140,10 @@ A new hook also gets a test file, a row in each table above and a section in
   only: the model keeps the original. A cloud session never calls it — no app
   viewing one asks the engine to draw — so there the user sees both, and
   `lib/final-report.mjs`, on `CLAUDE_CODE_REMOTE=true`, has the rewrite open
-  with `TO PUT IT BLUNTLY…` to mark it as the one that stands. It imports `rules/index.mjs`, so a rule
-  file importing anything from Node breaks it. Mechanism, dead ends and how to
-  verify a display change — in the desktop app; `claude -p` passed both dead
-  ends — are in [docs/hiding-refused-replies.md](docs/hiding-refused-replies.md).
+  with `TO PUT IT BLUNTLY…` to mark it as the one that stands. It imports
+  `rules/index.mjs`, so a rule importing anything from Node breaks it. The
+  mechanism, its dead ends, and verifying a display change (in the desktop app)
+  are in [docs/hiding-refused-replies.md](docs/hiding-refused-replies.md).
 - **The block's reason still quotes the refused lines** in the "Hook
   re-prompted Claude" row, collapsed by default in the desktop app. A
   user-level Stop hook's reason arrives alongside, and a decision pass that
@@ -161,8 +163,7 @@ A new hook also gets a test file, a row in each table above and a section in
   through.
 - **The message judged is the input's `last_assistant_message`;** the
   transcript, its fallback, lagged the stop in 10 of 312 past blocks.
-- **Anything a hook cannot read is not a veto** — no transcript, an
-  unparseable line, a turn with no text: exit 0.
+- **Anything a hook cannot read is not a veto:** no transcript, a bad line, no text.
 - **Run a Node hook under `env -u NODE_USE_SYSTEM_CA`.** Claude Code sets it for
   hooks, and it makes every Node start load the system certificates — about
   ten times the cost of the script itself, paid on every stop. Only a hook that
@@ -181,14 +182,17 @@ A new hook also gets a test file, a row in each table above and a section in
   sweep under `env -u NODE_USE_SYSTEM_CA` too: a Node start per message with
   the certificates loaded outruns a two-minute command timeout — or import the
   rule and call `offending` on each message, which needs no Node start at all.
-- **Diff the refused lines before and after the edit, both ways.** Lines added
-  are new refusals, each to read; lines removed are refusals the edit lost.
+- **Diff the refused lines before and after the edit, both ways:** import the
+  old rule (`git show HEAD:<rule path> > /tmp/old.mjs`) beside the new and
+  compare `offending` per message. Read each added refusal — one bare "just say"
+  caught "just say so", an instruction — and each lost one. The count goes in
+  the rule's section of `docs/stop-hook-terms.md`.
 
 ### Testing a hook
 
 - **Add the line a report carried past it to `test/`,** and run a bare `node
-  --test` from the root: `node --test test/` runs the folder as one file and
-  fails.
+  --test` from the root (`node --test test/` runs the folder as one file and
+  fails). Plain Node, no package: a worktree needs no `node_modules`.
 - **Test it against a transcript, not by reasoning.** A JSONL file of one
   `{"type":"assistant"}` entry piped in with `{"stop_hook_active":false,
   "transcript_path":...}` is the whole harness; add `last_assistant_message`
@@ -221,9 +225,8 @@ A new hook also gets a test file, a row in each table above and a section in
 
 ## Questions typed into an ask
 
-A question typed into an ask's answer is flagged by a `PostToolUse` hook, never
-refused by a Stop hook: whether a reply answers it is not a string match. See
-[docs/questions-in-asks.md](docs/questions-in-asks.md).
+A question typed into an ask's answer is flagged by a `PostToolUse` hook, never refused by a Stop
+hook: a reply answering it is not a string match. See [docs/questions-in-asks.md](docs/questions-in-asks.md).
 
 ## Evaluating a change
 
@@ -282,9 +285,7 @@ what the app cannot know: where the work stands.
 | 🪦 | dead end — the change did not work out; kept for the finding, not to resume |
 | 📚 | extracting learnings into AGENTS.md, or done extracting them |
 
-🔍, 🔒, 🔓 and 💾 are inert here — nothing in this repo is shared across sessions. They are
-listed so the vocabulary reads the same in every repo, and are ready the day a workflow grows into
-one.
+🔍, 🔒, 🔓 and 💾 are inert here — nothing in this repo is shared across sessions.
 
 The rest of the convention — precedence, never mentioning a prefix, one stage at a time —
 is the global session-titles glossary; this section names only the local half.
@@ -294,6 +295,5 @@ The lifecycle ✏️ → 🚀 is set by skills where one owns the stage (`update
 📚 is set in the response that invokes the `learn` skill — before reading anything or making any
 edit. The rest are set in the response that enters the stage, and nothing reconciles a title against reality —
 an abandoned session keeps whatever prefix it had. 🚙 in particular is worth setting before handing
-work back: the idle dot cannot tell "waiting on you" from "given up on". ⏲️ is the clock's
-version of it: a task scheduled for later with nothing to do until it fires. 🚙 takes precedence
-where the same response also needs the user — a person can act and the clock cannot.
+work back: the idle dot cannot tell "waiting on you" from "given up on". 🚙 outranks ⏲️ where
+the same response also needs the user — a person can act and the clock cannot.
