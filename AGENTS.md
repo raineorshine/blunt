@@ -178,12 +178,12 @@ A new hook also gets a test file, a row in each table above and a section in
   written is a false positive waiting to happen.
 - **Sweep the transcripts first.** Pull every final message from
   `~/.claude/projects/*/*.jsonl` (the last assistant text before each typed
-  prompt) — list them with `find ~/.claude/projects -name '*.jsonl' | xargs`,
-  since the shell glob over them has come back empty with the files there —
-  pipe each through the hook, and read the lines it refuses. Run the
-  sweep under `env -u NODE_USE_SYSTEM_CA` too: a Node start per message with
-  the certificates loaded outruns a two-minute command timeout — or import the
-  rule and call `offending` on each message, which needs no Node start at all.
+  prompt) — list them with `find ~/.claude/projects -name '*.jsonl'`, since the
+  shell glob has come back empty with the files there — skipping `/subagents/`
+  paths: a Stop hook never sees a subagent's report, and their review tables
+  inflated one rule's first sweep threefold. Import the rule and call
+  `offending` on each message in one Node process; a Node start per message
+  (under `env -u NODE_USE_SYSTEM_CA` if at all) outruns a two-minute timeout.
 - **Diff the refused lines before and after the edit, both ways:** import the
   old rule (`git show HEAD:<rule path> > /tmp/old.mjs`) beside the new and
   compare `offending` per message. Read each added refusal — one bare "just say"
@@ -259,8 +259,7 @@ not an edit that failed to land. Check the file, not the injection.
 
 ## Reporting
 
-Never suggest restarting Claude Code; that is `claude plugin update`'s own advice.
-After `/ship`, end on the last bullet — no "Done.", no "Ready to …" line; nothing is waiting on the user.
+Never suggest restarting Claude Code (that is `claude plugin update`'s advice). After `/ship`, end on the last bullet — no "Done.", no "Ready to …" line; nothing is waiting on the user.
 
 ## Session titles
 
